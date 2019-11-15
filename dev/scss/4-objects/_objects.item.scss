@@ -7,6 +7,7 @@
   z-index: 1;
   background: #000;
   color: #fff;
+  border: 2px solid;
 
   .item-content {
     position: relative;
@@ -22,5 +23,23 @@
   }
   .muuri-item-hidden {
     z-index: 0;
+  }
+  .muuri-item-placeholder {
+    z-index: 2;
+    margin: 0;
+    opacity: 0.5;
+  }
+
+  &.quest{
+    border-color: yellow;
+  }
+  &.weapon{
+    border-color: gray;
+  }
+  &.consumable{
+    border-color: green;
+  }
+  &.crafting{
+    border-color: red;
   }
 }
