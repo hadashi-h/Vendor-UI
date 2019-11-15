@@ -1,18 +1,29 @@
+import Person from "./person.js";
+ 
+var user = new Person;
+user.money = 1000;
 
-  var vendorMoney = 1000;
-  var userMoney = 1000;  
-document.getElementById("user-money").innerHTML = userMoney;
-document.getElementById("vendor-money").innerHTML = vendorMoney;
+var vendor = new Person;
+vendor.money = 2000;
 
+
+$(document).ready(function(){ 
+  updateFunds();
+});
+
+function updateFunds(){
+  $("#user-money").html(user.money);
+  $("#vendor-money").html(vendor.money);
+}
+  
 var vendorInventory = new Muuri('.vendor-inventory', {
     items: generateItems(56),
-
     dragEnabled: true,
     dragStartPredicate: function (item, event) {
         //dragable only if price is not bigger than funds
         var element = item._element;
         var price = $(element).data("price");
-        if (price > userMoney) {
+        if (price > user.money) {
             return false;
         }
         return Muuri.ItemDrag.defaultStartPredicate(item, event);
@@ -21,7 +32,6 @@ var vendorInventory = new Muuri('.vendor-inventory', {
     dragSort: function () {
       return [vendorInventory, userInventory]
     },
-    
     dragPlaceholder: {
         enabled: true,
         duration: 400,
@@ -35,11 +45,10 @@ var vendorInventory = new Muuri('.vendor-inventory', {
   .on('beforeSend', function (data) {
     var element = data.item._element;
     var price = $(element).data("price");
-    if(price < userMoney){
-        userMoney = userMoney - price;
-        vendorMoney = +vendorMoney + +price;
-        document.getElementById("user-money").innerHTML = userMoney;
-        document.getElementById("vendor-money").innerHTML = vendorMoney;
+    if(price < user.money){
+        user.money = user.money - price;
+        vendor.money = +vendor.money + +price;
+        updateFunds();
     }
   });
   
@@ -50,7 +59,7 @@ var vendorInventory = new Muuri('.vendor-inventory', {
         //dragable only if price is not bigger than funds
         var element = item._element;
         var price = $(element).data("price");
-        if (price > vendorMoney) {
+        if (price > vendor.money) {
             return false;
         }
         return Muuri.ItemDrag.defaultStartPredicate(item, event);
@@ -72,11 +81,10 @@ var vendorInventory = new Muuri('.vendor-inventory', {
   .on('beforeSend', function (data) {
     var element = data.item._element;
     var price = $(element).data("price");
-    if(price < vendorMoney){
-        vendorMoney = vendorMoney - price;
-        userMoney = +userMoney + +price;
-        document.getElementById("user-money").innerHTML = userMoney;
-        document.getElementById("vendor-money").innerHTML = vendorMoney;
+    if(price < vendor.money){
+        vendor.money = vendor.money - price;
+        user.money = +user.money + +price;
+        updateFunds();
     }
   });
   
