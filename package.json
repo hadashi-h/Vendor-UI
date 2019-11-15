@@ -1,0 +1,34 @@
+{
+  "name": "vendor-ui",
+  "version": "1.0.0",
+  "description": "Vendor UI",
+  "main": "dist/js/index.js",
+  "scripts": {
+    "gulp": "gulp watch",
+    "build": "./node_modules/.bin/gulp build --env production"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/hadashi-h/Vendor-UI.git"
+  },
+  "author": "Hadashi",
+  "license": "MIT",
+  "devDependencies": {
+    "browser-sync": "^2.26.7",
+    "cssnano": "^4.1.10",
+    "del": "^3.0.0",
+    "gulp": "^4.0.2",
+    "gulp-concat": "^2.6.1",
+    "gulp-if": "^2.0.2",
+    "gulp-postcss": "^8.0.0",
+    "gulp-sass": "^4.0.2",
+    "gulp-sourcemaps": "^2.6.4",
+    "gulp-uglify-es": "^1.0.4",
+    "yargs": "^14.0.0"
+  },
+  "dependencies": {
+    "bootstrap": "^4.1.3",
+    "jquery": "^3.3.1",
+    "popper.js": "^1.14.6"
+  }
+}
