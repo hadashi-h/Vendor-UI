@@ -107,11 +107,21 @@ var vendorInventory = new Muuri('.vendor-inventory', {
 
   function generateItem(type, name, price, quantity, description) {
     var itemElem = document.createElement('div');
+    var useItem = "";
+    if(type == "consumable"){
+      useItem = '<button type="button" class="btn-primary">use item</button>';
+    }
     var itemTemplate = '' +
         '<div class="item ' + type + '" data-price=" '+ price + '">' +
           '<div class="item-content">' +
                 name + ' ' + price +
               '<div class="item-quantity">'+ quantity +'</div>' +
+              '<div class="item-more">'+ 
+                  '<h5>' + name + '</h5>' +
+                  '<h6>' + price + '</h6>' +
+                  '<p>' + description + '</p>' +
+                  useItem +
+              '</div>' +
           '</div>' +
         '</div>';
 
