@@ -6,6 +6,14 @@ user.money = 1000;
 var vendor = new Person;
 vendor.money = 2000;
 
+const itemTypes = {
+  QUEST: "quest",
+  WEAPON: "weapon",
+  CONSUMABLE: "consumable",
+  CRAFTING: "crafting"
+};
+
+Object.freeze(itemTypes);
 
 $(document).ready(function(){ 
   updateFunds();
@@ -87,20 +95,16 @@ var vendorInventory = new Muuri('.vendor-inventory', {
         updateFunds();
     }
   });
+
+
   
-
-  //init 
-
+//init
   function generateItems(amount) {
-    var ret = [];
-    var itemTypes = [
-        "quest",
-        "weapon",
-        "consumable",
-        "crafting"
-      ];
+    var ret = []; 
+    var keys = Object.keys(itemTypes);
+
     for (var i = 0; i < amount; i++) {
-        var randomItem = itemTypes[Math.floor(Math.random()*itemTypes.length)];
+        var randomItem = itemTypes[keys[ keys.length * Math.random() << 0]];
         ret.push(generateItem(
               randomItem,
               randomItem,
