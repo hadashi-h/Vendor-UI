@@ -24,6 +24,39 @@ function updateFunds(){
   $("#vendor-money").html(vendor.money);
 }
   
+$('.user-inventory').on('click', function (e) {
+  if (elementMatches(e.target, '#use-item')) {
+    removeItem(e,userInventory);
+  }
+});
+
+function removeItem(e, inventory) {
+  var elem = elementClosest(e.target, '.item');
+  inventory.hide(elem, {onFinish: function (items) {
+    var item = items[0];
+    inventory.remove(item, {removeElements: true});
+  }});
+}
+
+function elementMatches(element, selector) {
+  var p = Element.prototype;
+  return (p.matches || p.matchesSelector || p.webkitMatchesSelector || p.mozMatchesSelector || p.msMatchesSelector || p.oMatchesSelector).call(element, selector);
+}
+  
+function elementClosest(element, selector) {
+  if (window.Element && !Element.prototype.closest) {
+    var isMatch = elementMatches(element, selector);
+    while (!isMatch && element && element !== document) {
+      element = element.parentNode;
+      isMatch = element && element !== document && elementMatches(element, selector);
+    }
+    return element && element !== document ? element : null;
+  }
+  else {
+    return element.closest(selector);
+  }
+}
+
 var vendorInventory = new Muuri('.vendor-inventory', {
     items: generateItems(56),
     dragEnabled: true,
@@ -121,7 +154,7 @@ var vendorInventory = new Muuri('.vendor-inventory', {
     var itemElem = document.createElement('div');
     var useItem = "";
     if(type == "consumable"){
-      useItem = '<button type="button" class="btn-primary">use item</button>';
+      useItem = '<button type="button" id="use-item" class="btn-primary">use item</button>';
     }
     var itemTemplate = '' +
         '<div class="item ' + type + '" data-price=" '+ price + '">' +
