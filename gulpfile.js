@@ -110,6 +110,8 @@ function prepareJsLibs() {
       "node_modules/jquery/dist/jquery.min.js",
       "node_modules/popper.js/dist/umd/popper.min.js",
       "node_modules/bootstrap/dist/js/bootstrap.min.js",
+      "node_modules/web-animations-js/web-animations.min.js",
+      "node_modules/muuri/dist/muuri.min.js"
     ])
     .pipe(gulpIf(taskOptions.sourcemaps, sourcemaps.init()))
     .pipe(concat("default-js.js"))    
