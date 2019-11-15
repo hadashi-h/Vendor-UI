@@ -1,9 +1,11 @@
+$item-size: 80px;
+
 .item {
   display: block;
   position: absolute;
-  width: 100px;
-  height: 100px;
-  margin: 5px;
+  width: $item-size;
+  height: $item-size;
+  margin: 0 3px 3px 0;
   z-index: 1;
   border: 2px solid;
   background-color: #fefefeaa;
