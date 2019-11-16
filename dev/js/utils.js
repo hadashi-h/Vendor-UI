@@ -17,3 +17,14 @@ export function elementClosest(element, selector) {
         return element.closest(selector);
     }
 }
+
+export function compareItemType(a, b) {
+    let aVal = a.getElement().getAttribute('data-type') || '';
+    let bVal = b.getElement().getAttribute('data-type') || '';
+    return aVal < bVal ? -1 : aVal > bVal ? 1 : compareItemPrice(a, b);
+}
+export function compareItemPrice(a, b) {
+    let aVal = a.getElement().getAttribute('data-price') || '';
+    let bVal = b.getElement().getAttribute('data-price') || '';
+    return +aVal < +bVal ? -1 : +aVal > +bVal ? 1 : 0;
+}

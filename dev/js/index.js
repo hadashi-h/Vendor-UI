@@ -2,6 +2,9 @@ import Person from "./Person.js";
 import Item from "./Item.js";
 import { elementMatches } from "./utils.js";
 import { elementClosest } from "./utils.js";
+import { compareItemType } from "./utils.js";
+import { compareItemPrice } from "./utils.js";
+
 var itemsList;
 var user;
 var vendor;
@@ -20,10 +23,10 @@ $(document).ready(function () {
   itemsList = generateItems(20);
   vendor = new Person(2000, itemsList);
   vendorInventory.add(generateItemsTemplates(itemsList));
+  vendorInventory.sort(compareItemType);
   user = new Person(2000, itemsList);
   updateFunds();
 });
-
 
 function updateFunds() {
   $("#user-money").html(user.money);
@@ -141,3 +144,15 @@ function generateItems(amount) {
   }
   return ret;
 }
+$('#sort-vendor-type').on('click', function () {
+  vendorInventory.sort(compareItemType);
+});
+$('#sort-vendor-price').on('click', function () {
+  vendorInventory.sort(compareItemPrice);
+});
+$('#sort-user-type').on('click', function () {
+  userInventory.sort(compareItemType);
+});
+$('#sort-user-price').on('click', function () {
+  userInventory.sort(compareItemPrice);
+});

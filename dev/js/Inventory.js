@@ -35,7 +35,7 @@ export default class Inventory {
 
         let div = document.createElement('div');
         let itemTemplate = '' +
-        '<div id="item-'+ item.id +'" class="item ' + item.type + '" data-price=" '+ item.price + '">' +
+        '<div id="'+ item.id +'" class="item ' + item.type + '" data-type="' + item.type + '" data-price=" '+ item.price + '">' +
           '<div class="item-content">' +
                 item.name + ' ' + item.price +
               '<div class="item-quantity">' +  this.getItemQuantity(item.id) + '</div>' +
