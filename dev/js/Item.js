@@ -1,6 +1,8 @@
+var itemsCounter = 0;
+
 export default class Item{
-    constructor(id, name, type, price, description){
-        this.id = id;
+    constructor(name, type, price, description){
+        this.id = itemsCounter++;
         this.name = name;
         this.type = type;
         this.price = price;

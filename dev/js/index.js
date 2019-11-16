@@ -2,12 +2,9 @@ import Person from "./Person.js";
 import Item from "./Item.js";
 import { elementMatches } from "./utils.js";
 import { elementClosest } from "./utils.js";
-
-var user = new Person;
-user.money = 1000;
-
-var vendor = new Person;
-vendor.money = 2000;
+var itemsList;
+var user;
+var vendor;
 
 const itemTypes = {
   QUEST: "quest",
@@ -15,12 +12,18 @@ const itemTypes = {
   CONSUMABLE: "consumable",
   CRAFTING: "crafting"
 };
-
 Object.freeze(itemTypes);
 
+
+
 $(document).ready(function () {
+  itemsList = generateItems(20);
+  vendorInventory.add(generateItemsTemplates(itemsList));
+  vendor = new Person(2000, itemsList);
+  user = new Person(2000, itemsList);
   updateFunds();
 });
+
 
 function updateFunds() {
   $("#user-money").html(user.money);
@@ -44,7 +47,6 @@ function removeItem(e, inventory) {
 }
 
 var vendorInventory = new Muuri('.vendor-inventory', {
-  items: generateItems(56),
   dragEnabled: true,
   dragStartPredicate: function (item, event) {
     //dragable only if price is not bigger than funds
@@ -80,7 +82,6 @@ var vendorInventory = new Muuri('.vendor-inventory', {
   });
 
 var userInventory = new Muuri('.user-inventory', {
-  items: generateItems(2),
   dragEnabled: true,
   dragStartPredicate: function (item, event) {
     //dragable only if price is not bigger than funds
@@ -117,6 +118,16 @@ var userInventory = new Muuri('.user-inventory', {
 
 
 //init
+function generateItemsTemplates(itemsList) {
+  let ret = [];
+
+  for (var i = 0; i < itemsList.length; i++) {
+    let itemTemplate = itemsList[i].getItemTemplate();
+    ret.push(itemTemplate);
+  }
+  return ret;
+}
+
 function generateItems(amount) {
   let ret = [];
   let keys = Object.keys(itemTypes);
@@ -126,10 +137,9 @@ function generateItems(amount) {
     let randomQuantity = 1 + Math.floor(Math.random() * 100);
     let randomPrice = 100 + Math.floor(Math.random() * 2000);
 
-    let item = new Item(i, randomType, randomType, randomPrice, 'desc');
-    let itemTemplate = item.getItemTemplate();
+    let item = new Item(randomType, randomType, randomPrice, 'desc');
 
-    ret.push(itemTemplate);
+    ret.push(item);
   }
   return ret;
 }
