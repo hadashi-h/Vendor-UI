@@ -1,6 +1,7 @@
 import Person from "./Person.js";
 import { elementMatches } from "./utils.js";
 import { elementClosest } from "./utils.js";
+import Item from "./Item.js";
  
 var user = new Person;
 user.money = 1000;
@@ -112,47 +113,21 @@ var vendorInventory = new Muuri('.vendor-inventory', {
     }
   });
 
-
   
 //init
   function generateItems(amount) {
-    var ret = []; 
-    var keys = Object.keys(itemTypes);
+    let ret = []; 
+    let keys = Object.keys(itemTypes);
 
     for (var i = 0; i < amount; i++) {
-        var randomItem = itemTypes[keys[ keys.length * Math.random() << 0]];
-        ret.push(generateItem(
-              randomItem,
-              randomItem,
-              100 + Math.floor(Math.random() * 2000),
-              1 + Math.floor(Math.random() * 100),
-              'description'
-          ));
+      let randomType = itemTypes[keys[ keys.length * Math.random() << 0]];
+      let randomQuantity = 1 + Math.floor(Math.random() * 100);
+      let randomPrice = 100 + Math.floor(Math.random() * 2000);
+
+      let item = new Item(i, randomType, randomType, randomPrice, 'desc');
+      let itemTemplate = item.getItemTemplate();
+
+      ret.push(itemTemplate);
       }
-
-    return ret;
-  }
-
-  function generateItem(type, name, price, quantity, description) {
-    var itemElem = document.createElement('div');
-    var useItem = "";
-    if(type == "consumable"){
-      useItem = '<button type="button" id="use-item" class="btn-primary">use item</button>';
-    }
-    var itemTemplate = '' +
-        '<div class="item ' + type + '" data-price=" '+ price + '">' +
-          '<div class="item-content">' +
-                name + ' ' + price +
-              '<div class="item-quantity">'+ quantity +'</div>' +
-              '<div class="item-more">'+ 
-                  '<h5>' + name + '</h5>' +
-                  '<h6>' + price + '</h6>' +
-                  '<p>' + description + '</p>' +
-                  useItem +
-              '</div>' +
-          '</div>' +
-        '</div>';
-
-    itemElem.innerHTML = itemTemplate;
-    return itemElem.firstChild;
+     return ret;
   }
