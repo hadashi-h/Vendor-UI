@@ -1,4 +1,6 @@
-import Person from "./person.js";
+import Person from "./Person.js";
+import { elementMatches } from "./utils.js";
+import { elementClosest } from "./utils.js";
  
 var user = new Person;
 user.money = 1000;
@@ -37,26 +39,7 @@ function removeItem(e, inventory) {
     inventory.remove(item, {removeElements: true});
   }});
 }
-
-function elementMatches(element, selector) {
-  var p = Element.prototype;
-  return (p.matches || p.matchesSelector || p.webkitMatchesSelector || p.mozMatchesSelector || p.msMatchesSelector || p.oMatchesSelector).call(element, selector);
-}
-  
-function elementClosest(element, selector) {
-  if (window.Element && !Element.prototype.closest) {
-    var isMatch = elementMatches(element, selector);
-    while (!isMatch && element && element !== document) {
-      element = element.parentNode;
-      isMatch = element && element !== document && elementMatches(element, selector);
-    }
-    return element && element !== document ? element : null;
-  }
-  else {
-    return element.closest(selector);
-  }
-}
-
+ 
 var vendorInventory = new Muuri('.vendor-inventory', {
     items: generateItems(56),
     dragEnabled: true,
