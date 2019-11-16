@@ -1,5 +1,5 @@
 import Person from "./Person.js";
-import Item from "./Item.js";
+import { Weapon, Consumable, CraftingMaterial, Quest } from "./Item.js";
 import { elementMatches } from "./utils.js";
 import { elementClosest } from "./utils.js";
 import { compareItemType } from "./utils.js";
@@ -15,9 +15,8 @@ const itemTypes = {
   CONSUMABLE: "consumable",
   CRAFTING: "crafting"
 };
+
 Object.freeze(itemTypes);
-
-
 
 const grids = [setupGrid('.vendor-inventory'), setupGrid('.user-inventory')];
 var vendorInventory = grids[0];
@@ -62,11 +61,17 @@ function setupGrid(container) {
     dragSort: function () {
       return [vendorInventory, userInventory]
     },
-    dragSortPredicate: function (item) {
-      var result = Muuri.ItemDrag.defaultSortPredicate(item, dragSortOptions);
-      console.log(item);
-      if(item._element.classList.contains('quest') && result.grid._element.classList.contains('vendor-inventory')){
-        showMonit("Nah, I don't want this");
+    dragSortPredicate: function (htmlItem) {
+      var result = Muuri.ItemDrag.defaultSortPredicate(htmlItem, dragSortOptions);
+      let item;
+      for (let i = 0; i < itemsList.length; i++) {
+        if (htmlItem._element.id == itemsList[i].id) {
+            item = itemsList[i];
+            break;
+        }
+    }
+      if(item instanceof Quest && result.grid._element.classList.contains('vendor-inventory')){
+        showMonit("vendor", "Nah, I don't want this");
         return false;
       }
       return result;
@@ -122,7 +127,23 @@ function generateItems(amount) {
   for (var i = 0; i < amount; i++) {
     let randomType = itemTypes[keys[keys.length * Math.random() << 0]];
     let randomPrice = 100 + Math.floor(Math.random() * 2000);
-    let item = new Item(randomType, randomType, randomPrice, 'desc');
+    let item;
+    switch (randomType) {
+      case itemTypes.QUEST:
+        item = new Quest(randomType, randomType, randomPrice, 'desc');
+        break;
+      case itemTypes.WEAPON:
+          item = new Weapon(randomType, randomType, randomPrice, 'desc');
+          break;
+      case itemTypes.CONSUMABLE:
+          item = new Consumable(randomType, randomType, randomPrice, 'desc');
+          break;
+      case itemTypes.CRAFTING:
+          item = new CraftingMaterial(randomType, randomType, randomPrice, 'desc');
+          break;
+      default:
+        break;
+    }
     ret.push(item);
   }
   return ret;

@@ -1,6 +1,6 @@
 var itemsCounter = 0;
 
-export default class Item{
+class Item{
     constructor(name, type, price, description){
         this.id = itemsCounter++;
         this.name = name;
@@ -9,4 +9,23 @@ export default class Item{
         this.description = description;
     }
 
+}
+export class DisassemblableItem extends Item{
+
+}
+
+export class Weapon extends DisassemblableItem{
+
+}
+
+export class Consumable extends DisassemblableItem{
+    
+}
+
+export class CraftingMaterial extends Item{
+    
+}
+
+export class Quest extends Item{
+    
 }
