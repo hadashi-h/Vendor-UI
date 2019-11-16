@@ -18,17 +18,33 @@
         </div>
         <div class="row">
             <div class="col-sm-6">
-                <h2>Vendor</h2>
-                <div id="vendor-money"></div>
+                <div class="d-flex justify-content-between">
+                    <h2>Vendor</h2>
+                    <h2><div id="vendor-money"></div></h2>
                 </div>
+
+                <hr>
+                <button class="btn-primary sort-vendor-asc">Sort (ascending)</button>
+                <button class="btn-primary sort-vendor-desc">Sort (desc)</button>
+                <!-- <div class="control sort">
+                    <select class="control-field sort-field form-control">
+                        <option value="order" selected="">Drag</option>
+                        <option value="title">Title (drag disabled)</option>
+                        <option value="color">Color (drag disabled)</option>
+                    </select>
+                </div> -->
                 <hr>
                 <div class="vendor-inventory grid"></div>
                 <div class="vendor-disassemble grid"></div>
             </div>
             <div class="col-sm-6">
-                <h2>User</h2>
-                <div id="user-money"></div>
+                <div class="d-flex justify-content-between">
+                    <h2>User</h2>
+                    <h2><div id="user-money"></div></h2>
+                </div>
                 
+                <hr>
+                <button class="btn-primary sort-user-asc">Sort (ascending)</button>
                 <hr>
                 <div class="user-inventory grid"></div>                
             </div>

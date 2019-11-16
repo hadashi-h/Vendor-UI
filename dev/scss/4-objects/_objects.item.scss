@@ -5,11 +5,11 @@ $item-size: 80px;
   position: absolute;
   width: $item-size;
   height: $item-size;
-  margin: 0 3px 3px 0;
+  margin: 3px;
   z-index: 1;
   border: 2px solid;
   background-color: #fefefeaa;
-  &:hover{
+  &:hover {
     z-index: 9999;
   }
 
@@ -24,7 +24,7 @@ $item-size: 80px;
     bottom: 0;
     padding: 0;
     margin: 0 5px;
-}
+  }
   .item-more {
     z-index: 10;
     opacity: 1;
@@ -37,17 +37,21 @@ $item-size: 80px;
     margin: 0% -50%;
     display: none;
   }
-  &:hover > .item-content> .item-more{
+  &:hover > .item-content > .item-more {
     display: block;
   }
-
-  .muuri-item-dragging {
+  &.muuri-item-dragging,
+  &.muuri-item-releasing {
+    z-index: 9999;
+  }
+  &.muuri-item-dragging {
+    cursor: move; 
     z-index: 3;
   }
-  .muuri-item-releasing {
+  &.muuri-item-releasing {
     z-index: 2;
   }
-  .muuri-item-hidden {
+  &.muuri-item-hidden {
     z-index: 0;
   }
 
@@ -56,19 +60,19 @@ $item-size: 80px;
     margin: 0;
     opacity: 0.5;
   }
-  &.quest{
+  &.quest {
     border-color: orange;
     color: orange;
   }
-  &.weapon{
+  &.weapon {
     border-color: gray;
     color: gray;
   }
-  &.consumable{
+  &.consumable {
     border-color: green;
     color: green;
   }
-  &.crafting{
+  &.crafting {
     border-color: red;
     color: red;
   }
