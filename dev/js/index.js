@@ -19,11 +19,16 @@ Object.freeze(itemTypes);
 
 
 
+const grids = [setupGrid('.vendor-inventory'), setupGrid('.user-inventory')];
+var vendorInventory = grids[0];
+var userInventory = grids[1];
+
 $(document).ready(function () {
   itemsList = generateItems(20);
   vendor = new Person(2000, itemsList);
   vendorInventory.add(generateItemsTemplates(itemsList));
   vendorInventory.sort(compareItemType);
+  userInventory.sort(compareItemType);
   user = new Person(2000, itemsList);
   updateFunds();
 });
@@ -32,79 +37,59 @@ function updateFunds() {
   $("#user-money").html(user.money);
   $("#vendor-money").html(vendor.money);
 }
+function allGrids() {
+  return grids;
+}
 
+function setupGrid(container) {
+  return new Muuri(container, {
+    dragEnabled: true,
+    dragSortHeuristics: {
+      sortInterval: 50,
+      minDragDistance: 10,
+      minBounceBackAngle: 1
+    },
+    dragContainer: document.body,
+    dragPlaceholder: {
+      enabled: true,
+      duration: 400,
+      createElement: function (item) {
+        return item.getElement().cloneNode(true);
+      }
+    },
+    dragReleaseDuration: 400,
+    dragReleseEasing: 'ease',
+    dragSort: function () {
+      return [vendorInventory, userInventory]
+    },
+    dragSortPredicate: function (item) {
+      var result = Muuri.ItemDrag.defaultSortPredicate(item, dragSortOptions);
+      console.log(item);
+      if(item._element.classList.contains('quest') && result.grid._element.classList.contains('vendor-inventory')){
+        showMonit("Nah, I don't want this");
+        return false;
+      }
+      return result;
 
-
-var vendorInventory = new Muuri('.vendor-inventory', {
-  dragEnabled: true,
-  dragStartPredicate: function (item, event) {
-    //dragable only if price is not bigger than funds
-    var element = item._element;
-    var price = $(element).data("price");
-    if (price > user.money) {
-      return false;
     }
-    return Muuri.ItemDrag.defaultStartPredicate(item, event);
-  },
-  dragContainer: document.body,
-  dragSort: function () {
-    return [vendorInventory, userInventory]
-  },
-  dragPlaceholder: {
-    enabled: true,
-    duration: 400,
-    createElement: function (item) {
-      return item.getElement().cloneNode(true);
-    }
-  },
-  dragReleaseDuration: 400,
-  dragReleseEasing: 'ease'
-})
-  .on('beforeSend', function (data) {
-    var element = data.item._element;
-    var price = $(element).data("price");
-    if (price < user.money) {
-      user.money = user.money - price;
-      vendor.money = +vendor.money + +price;
-      updateFunds();
-    }
+  }).on('dragStart', dragStart)
+    .on('dragReleaseEnd', dragReleaseEnd);
+}
+var dragSortOptions = {
+  action: 'swap',
+  threshold: 50
+};
+function dragStart(item) {
+  item.getElement().style.width = item.getWidth() + 'px';
+  item.getElement().style.height = item.getHeight() + 'px';
+}
+function dragReleaseEnd(item){
+  item.getElement().style.width = '';
+  item.getElement().style.height = '';
+  grids.forEach(grid => {
+    grid.refreshItems().layout();
   });
-
-var userInventory = new Muuri('.user-inventory', {
-  dragEnabled: true,
-  dragStartPredicate: function (item, event) {
-    //dragable only if price is not bigger than funds
-    var element = item._element;
-    var price = $(element).data("price");
-    if (price > vendor.money) {
-      return false;
-    }
-    return Muuri.ItemDrag.defaultStartPredicate(item, event);
-  },
-  dragContainer: document.body,
-  dragSort: function () {
-    return [vendorInventory, userInventory]
-  },
-  dragPlaceholder: {
-    enabled: true,
-    duration: 400,
-    createElement: function (item) {
-      return item.getElement().cloneNode(true);
-    }
-  },
-  dragReleaseDuration: 400,
-  dragReleseEasing: 'ease'
-})
-  .on('beforeSend', function (data) {
-    var element = data.item._element;
-    var price = $(element).data("price");
-    if (price < vendor.money) {
-      vendor.money = vendor.money - price;
-      user.money = +user.money + +price;
-      updateFunds();
-    }
-  });
-
+}
 
 function removeItem(e, inventory) {
   let elem = elementClosest(e.target, '.item');
@@ -143,11 +128,14 @@ function generateItems(amount) {
   return ret;
 }
 
-
-
+function showMonit(text){
+  $('body').append('<div class="monit">' + text + '</div>');
+  setTimeout(function() { 
+    $('.monit').remove();
+  }, 3000);
+}
 
 //buttons
-
 $('.user-inventory').on('click', function (e) {
   if (elementMatches(e.target, '#use-item')) {
     removeItem(e, userInventory);
