@@ -18,8 +18,10 @@ const itemTypes = {
 
 Object.freeze(itemTypes);
 
+
 $(document).ready(function(){ 
   updateFunds();
+
 });
 
 function updateFunds(){

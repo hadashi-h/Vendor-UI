@@ -1,5 +1,6 @@
-export default class Person{
-    constructor(money){
+export default class Person {
+    constructor(money) {
         this.money = money;
-    }  
+    }
+
 }
