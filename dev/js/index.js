@@ -112,7 +112,11 @@ function removeItem(e, inventory) {
 function generateItemsTemplates(itemsList) {
   let ret = [];
   for (var i = 0; i < itemsList.length; i++) {
-    let randomQuantity = 1 + Math.floor(Math.random() * 100);
+
+    let randomQuantity = 1;
+    if(itemsList[i].name != "quest"){
+      randomQuantity = 1 + Math.floor(Math.random() * 100);
+    }
     vendor.addItem(itemsList[i].id, randomQuantity);
     let itemTemplate = vendor.inventory.getItemTemplate(itemsList[i].id);
     ret.push(itemTemplate);

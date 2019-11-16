@@ -43,15 +43,19 @@ export default class Inventory {
         }
 
         let usable = ""; 
+        let quantity = this.getItemQuantity(item.id); 
         if(item.type == "consumable"){
             usable = '<button id="use-item" type="button" class="btn-primary use-item">Use Item</button>';
+        }
+        if(quantity != 1){
+            quantity = '<div class="item-quantity">' +  quantity + '</div>'
         }
         let div = document.createElement('div');
         let itemTemplate = '' +
         '<div id="'+ item.id +'" class="item ' + item.type + '" data-type="' + item.type + '" data-price=" '+ item.price + '">' +
           '<div class="item-content">' +
                 item.name + ' ' + item.price +
-              '<div class="item-quantity">' +  this.getItemQuantity(item.id) + '</div>' +
+                quantity +
               '<div class="item-more">'+ 
                   '<h5>' + item.name + '</h5>' +
                   '<h6>' + item.price + '</h6>' +
