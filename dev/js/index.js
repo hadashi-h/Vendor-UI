@@ -33,21 +33,7 @@ function updateFunds() {
   $("#vendor-money").html(vendor.money);
 }
 
-$('.user-inventory').on('click', function (e) {
-  if (elementMatches(e.target, '#use-item')) {
-    removeItem(e, userInventory);
-  }
-});
 
-function removeItem(e, inventory) {
-  var elem = elementClosest(e.target, '.item');
-  inventory.hide(elem, {
-    onFinish: function (items) {
-      var item = items[0];
-      inventory.remove(item, { removeElements: true });
-    }
-  });
-}
 
 var vendorInventory = new Muuri('.vendor-inventory', {
   dragEnabled: true,
@@ -120,9 +106,21 @@ var userInventory = new Muuri('.user-inventory', {
   });
 
 
+function removeItem(e, inventory) {
+  let elem = elementClosest(e.target, '.item');
+  let id = elem.getAttribute('id');
+  vendor.inventory.removeItem(+id, 1);
+  inventory.hide(elem, {
+    onFinish: function (items) {
+      let item = items[0];
+      inventory.remove(item, { removeElements: true });
+    }
+  });
+}
+
 //init
 function generateItemsTemplates(itemsList) {
-  let ret = []; 
+  let ret = [];
   for (var i = 0; i < itemsList.length; i++) {
     let randomQuantity = 1 + Math.floor(Math.random() * 100);
     vendor.addItem(itemsList[i].id, randomQuantity);
@@ -144,6 +142,17 @@ function generateItems(amount) {
   }
   return ret;
 }
+
+
+
+
+//buttons
+
+$('.user-inventory').on('click', function (e) {
+  if (elementMatches(e.target, '#use-item')) {
+    removeItem(e, userInventory);
+  }
+});
 $('#sort-vendor-type').on('click', function () {
   vendorInventory.sort(compareItemType);
 });

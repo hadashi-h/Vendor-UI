@@ -9,6 +9,15 @@ export default class Inventory {
         this.items.push({ itemId, quantity });
     }
 
+    removeItem(itemId, quantity) {
+        let array = this.items;
+        for( var i = 0; i < array.length; i++){ 
+            if ( array[i].itemId === itemId) {
+                array.splice(i, 1); 
+            }
+         }
+    }
+
     getItemQuantity(itemId) { 
         let array = this.items; 
         for (let i = 0; i < array.length; i++) {
@@ -33,6 +42,10 @@ export default class Inventory {
             }
         }
 
+        let usable = ""; 
+        if(item.type == "consumable"){
+            usable = '<button id="use-item" type="button" class="btn-primary use-item">Use Item</button>';
+        }
         let div = document.createElement('div');
         let itemTemplate = '' +
         '<div id="'+ item.id +'" class="item ' + item.type + '" data-type="' + item.type + '" data-price=" '+ item.price + '">' +
@@ -43,6 +56,7 @@ export default class Inventory {
                   '<h5>' + item.name + '</h5>' +
                   '<h6>' + item.price + '</h6>' +
                   '<p>' + item.description + '</p>' +
+                  usable +
               '</div>' +
           '</div>' +
         '</div>';
