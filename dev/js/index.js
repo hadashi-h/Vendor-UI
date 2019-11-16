@@ -153,10 +153,10 @@ function generateItems(amount) {
   return ret;
 }
 
-function showMonit(text){
-  $('body').append('<div class="monit">' + text + '</div>');
+function showMonit(person, text){
+  $('body').append('<div class="monit ' + person + '">' + text + '</div>');
   setTimeout(function() { 
-    $('.monit').remove();
+    $('.monit.'+ person).remove();
   }, 3000);
 }
 
@@ -164,6 +164,7 @@ function showMonit(text){
 $('.user-inventory').on('click', function (e) {
   if (elementMatches(e.target, '#use-item')) {
     removeItem(e, userInventory);
+    showMonit("user", "Mmmm, delicious");
   }
 });
 $('#sort-vendor-type').on('click', function () {
