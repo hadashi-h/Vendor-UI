@@ -18,8 +18,8 @@ Object.freeze(itemTypes);
 
 $(document).ready(function () {
   itemsList = generateItems(20);
-  vendorInventory.add(generateItemsTemplates(itemsList));
   vendor = new Person(2000, itemsList);
+  vendorInventory.add(generateItemsTemplates(itemsList));
   user = new Person(2000, itemsList);
   updateFunds();
 });
@@ -119,10 +119,11 @@ var userInventory = new Muuri('.user-inventory', {
 
 //init
 function generateItemsTemplates(itemsList) {
-  let ret = [];
-
+  let ret = []; 
   for (var i = 0; i < itemsList.length; i++) {
-    let itemTemplate = itemsList[i].getItemTemplate();
+    let randomQuantity = 1 + Math.floor(Math.random() * 100);
+    vendor.addItem(itemsList[i].id, randomQuantity);
+    let itemTemplate = vendor.inventory.getItemTemplate(itemsList[i].id);
     ret.push(itemTemplate);
   }
   return ret;
@@ -134,11 +135,8 @@ function generateItems(amount) {
 
   for (var i = 0; i < amount; i++) {
     let randomType = itemTypes[keys[keys.length * Math.random() << 0]];
-    let randomQuantity = 1 + Math.floor(Math.random() * 100);
     let randomPrice = 100 + Math.floor(Math.random() * 2000);
-
     let item = new Item(randomType, randomType, randomPrice, 'desc');
-
     ret.push(item);
   }
   return ret;

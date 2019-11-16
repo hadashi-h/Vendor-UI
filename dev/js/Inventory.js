@@ -9,17 +9,45 @@ export default class Inventory {
         this.items.push({ itemId, quantity });
     }
 
-    getItem(itemId) { 
-        let array = this.allItems; 
+    getItemQuantity(itemId) { 
+        let array = this.items; 
         for (let i = 0; i < array.length; i++) {
-            if (itemId == array[i].id) {
-                console.log(array[i].name);
+            if (itemId == array[i].itemId) {
+                return array[i].quantity;
             }
         }
     }
 
     getInventory() {
         return this.items;
+    }
+
+    
+    getItemTemplate(itemId){
+        let item;
+        let allItems = this.allItems;
+        for (let i = 0; i < allItems.length; i++) {
+            if (itemId == allItems[i].id) {
+                item = allItems[i];
+                break;
+            }
+        }
+
+        let div = document.createElement('div');
+        let itemTemplate = '' +
+        '<div id="item-'+ item.id +'" class="item ' + item.type + '" data-price=" '+ item.price + '">' +
+          '<div class="item-content">' +
+                item.name + ' ' + item.price +
+              '<div class="item-quantity">' +  this.getItemQuantity(item.id) + '</div>' +
+              '<div class="item-more">'+ 
+                  '<h5>' + item.name + '</h5>' +
+                  '<h6>' + item.price + '</h6>' +
+                  '<p>' + item.description + '</p>' +
+              '</div>' +
+          '</div>' +
+        '</div>';
+        div.innerHTML = itemTemplate;
+        return div.firstChild;
     }
 
 }
