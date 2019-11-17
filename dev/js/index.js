@@ -5,6 +5,7 @@ import { elementMatches, elementClosest, compareItemType, compareItemPrice } fro
 var itemsList;
 var user;
 var vendor;
+var uuid = 0;
 
 const itemTypes = {
   QUEST: "quest",
@@ -110,9 +111,10 @@ function removeItem(e, inventory) {
 //init
 function generateItemsTemplates(itemsList) {
   let ret = [];
-  for (var i = 0; i < itemsList.length; i++) {
+  for (let i = 0; i < itemsList.length; i++) {
     let item = itemsList[i];
-    let randomQuantity = 1 + Math.floor(Math.random() * 100);
+    let maxStackSize = item.maxStackSize;
+    let randomQuantity;
 
     if (item instanceof Quest) {
       randomQuantity = 1;
@@ -120,14 +122,17 @@ function generateItemsTemplates(itemsList) {
     else if (item instanceof Weapon) {
       randomQuantity = 1 + Math.floor(Math.random() * 5);
     }
-    let maxStackSize = item.maxStackSize;
+    else {
+      randomQuantity = 1 + Math.floor(Math.random() * 100);
+    }
     vendor.addItem(item.id, randomQuantity);
+    
     while (randomQuantity > maxStackSize) {
       randomQuantity = randomQuantity - maxStackSize;
-      let itemTemplate = vendor.inventory.getItemTemplate(item.id, maxStackSize);
+      let itemTemplate = vendor.inventory.getItemTemplate(item.id, ++uuid, maxStackSize);
       ret.push(itemTemplate);
     }
-    let itemTemplate = vendor.inventory.getItemTemplate(item.id, randomQuantity);
+    let itemTemplate = vendor.inventory.getItemTemplate(item.id, ++uuid, randomQuantity);
     ret.push(itemTemplate);
   }
   return ret;
@@ -137,7 +142,7 @@ function generateItems(amount) {
   let ret = [];
   let keys = Object.keys(itemTypes);
 
-  for (var i = 0; i < amount; i++) {
+  for (let i = 0; i < amount; i++) {
     let randomType = itemTypes[keys[keys.length * Math.random() << 0]];
     let randomPrice = 100 + Math.floor(Math.random() * 2000);
     let item;
