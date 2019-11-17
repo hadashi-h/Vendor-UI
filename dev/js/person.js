@@ -6,6 +6,7 @@ export default class Person {
         this.id = personsCounter++;
         this.money = money;
         this.allItems = allItems;
+        this.isUser = isUser;
         this.inventory = new Inventory(this.id, this.allItems);
     } 
 
