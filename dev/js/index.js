@@ -28,10 +28,8 @@ $(document).ready(function () {
   userInventory.sort(compareItemType);
   user = new Person(22000, itemsList, true);
   updateFunds(user.money, vendor.money);
-
-  });
 });
- 
+
 function setupGrid(container) {
   return new Muuri(container, {
     dragEnabled: true,
