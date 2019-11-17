@@ -21,11 +21,11 @@ var userInventory = grids[1];
 
 $(document).ready(function () {
   itemsList = generateItems(10);
-  vendor = new Person(2000, itemsList);
+  vendor = new Person(2000, itemsList, false);
   vendorInventory.add(generateItemsTemplates(itemsList));
   vendorInventory.sort(compareItemType);
   userInventory.sort(compareItemType);
-  user = new Person(2000, itemsList);
+  user = new Person(2000, itemsList, true);
   updateFunds();
 });
 
@@ -162,18 +162,12 @@ function generateItems(amount) {
   return ret;
 }
 
-function showMonit(person, text) {
-  $('body').append('<div class="monit ' + person + '">' + text + '</div>');
-  setTimeout(function () {
-    $('.monit.' + person).remove();
-  }, 3000);
-}
 
 //buttons
 $('.user-inventory').on('click', function (e) {
   if (elementMatches(e.target, '#use-item')) {
     removeItem(e, userInventory);
-    showMonit("user", "Mmmm, delicious");
+    user.speaks("Mmmm, delicious");
   }
 });
 $('#sort-vendor-type').on('click', function () {
