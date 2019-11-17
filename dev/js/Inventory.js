@@ -27,6 +27,15 @@ export default class Inventory {
         }
     }
 
+    getItem(itemId) { 
+        let array = this.allItems; 
+        for (let i = 0; i < array.length; i++) {
+            if (itemId == array[i].id) {
+                return array[i];
+            }
+        }
+    }
+
     getInventory() {
         return this.items;
     }

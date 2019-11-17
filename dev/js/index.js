@@ -60,17 +60,38 @@ function setupGrid(container) {
       return [vendorInventory, userInventory]
     },
     dragSortPredicate: function (htmlItem) {
-      var result = Muuri.ItemDrag.defaultSortPredicate(htmlItem, dragSortOptions);
-      let item;
+      let result = Muuri.ItemDrag.defaultSortPredicate(htmlItem, dragSortOptions);
+      let resultGrid = result.grid;
+      let item; 
+
       for (let i = 0; i < itemsList.length; i++) {
         if (htmlItem._element.id == itemsList[i].id) {
           item = itemsList[i];
           break;
         }
       }
-      if (result.grid) {
-        if (item instanceof Quest && result.grid._element.classList.contains('vendor-inventory')) {
-          showMonit("vendor", "Nah, I don't want this");
+      if (resultGrid) {
+        if (resultGrid._element.classList.contains('user-inventory')) {
+          let stackAmount = $(htmlItem._element).find('.item-quantity').text();
+          
+          let quantityToBuy = 1; 
+          if(stackAmount){
+           // $('#choose-quantity-modal').modal('show');
+            quantityToBuy = 2;
+          }
+
+          if(user.buyItem(item.id, quantityToBuy) == false){
+            vendor.speaks("Not enough money, kid");
+            return false;
+          }
+          else{
+            vendor.sellItem(item.id, quantityToBuy);
+            vendor.speaks("Use it well"); 
+            updateFunds();
+          }
+        }
+        else if (item instanceof Quest && resultGrid._element.classList.contains('vendor-inventory')) {
+          vendor.speaks("Nah, I don't want this");
           return false;
         }
       }
