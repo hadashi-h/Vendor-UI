@@ -62,49 +62,64 @@ function setupGrid(container) {
     dragSortPredicate: function (htmlItem) {
       let result = Muuri.ItemDrag.defaultSortPredicate(htmlItem, dragSortOptions);
       let resultGrid = result.grid;
-      let item; 
+      let item;
+      let element = htmlItem._element;
 
       for (let i = 0; i < itemsList.length; i++) {
-        if (htmlItem._element.id == itemsList[i].id) {
+        if (element.id == itemsList[i].id) {
           item = itemsList[i];
           break;
         }
       }
       if (resultGrid) {
-        if (resultGrid._element.classList.contains('user-inventory')) {
-          let stackAmount = $(htmlItem._element).find('.item-quantity').text();
-          
-          let quantityToBuy = 1; 
-          if(stackAmount){
-           // $('#choose-quantity-modal').modal('show');
-            quantityToBuy = 2;
-          }
+        let userGrid = resultGrid._element.classList.contains('user-inventory');
+        let stackAmount = $(element).find('.item-quantity').text();
+        let quantityToBuy = 1;
 
-          if(user.buyItem(item.id, quantityToBuy) == false){
+        if (stackAmount) {
+          $('#choose-quantity-modal').modal('show');
+          quantityToBuy = 2;
+        }
+
+        //user buys stuff
+        if (userGrid) {
+          if (user.buyItem(item.id, quantityToBuy) == false) {
             vendor.speaks("Not enough money, kid");
             return false;
           }
-          else{
+          else {
             vendor.sellItem(item.id, quantityToBuy);
-            vendor.speaks("Use it well"); 
-            updateFunds();
+            vendor.speaks("Use it well");
           }
         }
-        else if (item instanceof Quest && resultGrid._element.classList.contains('vendor-inventory')) {
-          vendor.speaks("Nah, I don't want this");
-          return false;
+        //user sells stuff
+        else {
+          if (item instanceof Quest) {
+            vendor.speaks("Nah, I don't want this");
+            return false;
+          }
+          else if (vendor.buyItem(item.id, quantityToBuy) == false) {
+            vendor.speaks("Please, I cannot buy all your junk");
+            return false;
+          }
+          else {
+            user.sellItem(item.id, quantityToBuy);
+            user.speaks("I think you might want it");
+          }
         }
       }
+      updateFunds();
       return result;
-
     }
   }).on('dragStart', dragStart)
     .on('dragReleaseEnd', dragReleaseEnd);
 }
+
 var dragSortOptions = {
   action: 'swap',
   threshold: 50
 };
+
 function dragStart(item) {
   item.getElement().style.width = item.getWidth() + 'px';
   item.getElement().style.height = item.getHeight() + 'px';
