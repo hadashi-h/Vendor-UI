@@ -1,6 +1,6 @@
 import Person from "./Person.js";
 import { Weapon, Consumable, CraftingMaterial, Quest } from "./Item.js";
-import { elementMatches, elementClosest, compareItemType, compareItemPrice } from "./utils.js";
+import { elementMatches, elementClosest, compareItemType, compareItemPrice, updateFunds } from "./utils.js";
 
 var itemsList;
 var user;
@@ -26,15 +26,12 @@ $(document).ready(function () {
   vendorInventory.add(generateItemsTemplates(itemsList));
   vendorInventory.sort(compareItemType);
   userInventory.sort(compareItemType);
-  user = new Person(2000, itemsList, true);
-  updateFunds();
+  user = new Person(22000, itemsList, true);
+  updateFunds(user.money, vendor.money);
+
+  });
 });
-
-function updateFunds() {
-  $("#user-money").html(user.money);
-  $("#vendor-money").html(vendor.money);
-}
-
+ 
 function setupGrid(container) {
   return new Muuri(container, {
     dragEnabled: true,
@@ -110,7 +107,7 @@ function setupGrid(container) {
           }
         }
       }
-      updateFunds();
+      updateFunds(user.money, vendor.money);
       return result;
     }
   }).on('dragStart', dragStart)

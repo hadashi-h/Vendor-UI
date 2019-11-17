@@ -28,3 +28,11 @@ export function compareItemPrice(a, b) {
     let bVal = b.getElement().getAttribute('data-price') || '';
     return +aVal < +bVal ? -1 : +aVal > +bVal ? 1 : 0;
 }
+
+
+
+
+export function updateFunds(userMoney, vendorMoney) {
+    $("#user-money").html(userMoney);
+    $("#vendor-money").html(vendorMoney);
+}
