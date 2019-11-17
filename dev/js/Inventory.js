@@ -32,7 +32,7 @@ export default class Inventory {
     }
 
     
-    getItemTemplate(itemId){
+    getItemTemplate(itemId, quantity){
         let item;
         let allItems = this.allItems;
         for (let i = 0; i < allItems.length; i++) {
@@ -43,7 +43,6 @@ export default class Inventory {
         }
 
         let usable = ""; 
-        let quantity = this.getItemQuantity(item.id); 
         if(item.type == "consumable"){
             usable = '<button id="use-item" type="button" class="btn-primary use-item">Use Item</button>';
         }

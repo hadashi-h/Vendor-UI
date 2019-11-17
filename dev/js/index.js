@@ -113,12 +113,22 @@ function generateItemsTemplates(itemsList) {
   let ret = [];
   for (var i = 0; i < itemsList.length; i++) {
     let item = itemsList[i];
-    let randomQuantity = 1;
-    if(!(item instanceof Quest)){
-      randomQuantity = 1 + Math.floor(Math.random() * 100);
+    let randomQuantity = 1 + Math.floor(Math.random() * 100);
+
+    if (item instanceof Quest) {
+      randomQuantity = 1;
     }
+    else if (item instanceof Weapon) {
+      randomQuantity = 1 + Math.floor(Math.random() * 5);
+    }
+    let maxStackSize = item.maxStackSize;
     vendor.addItem(item.id, randomQuantity);
-    let itemTemplate = vendor.inventory.getItemTemplate(item.id);
+    while (randomQuantity > maxStackSize) {
+      randomQuantity = randomQuantity - maxStackSize;
+      let itemTemplate = vendor.inventory.getItemTemplate(item.id, maxStackSize);
+      ret.push(itemTemplate);
+    }
+    let itemTemplate = vendor.inventory.getItemTemplate(item.id, randomQuantity);
     ret.push(itemTemplate);
   }
   return ret;

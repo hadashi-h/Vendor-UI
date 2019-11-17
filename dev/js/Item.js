@@ -1,7 +1,7 @@
 var itemsCounter = 0;
 
-class Item{
-    constructor(name, type, price, description){
+class Item {
+    constructor(name, type, price, description) {
         this.id = itemsCounter++;
         this.name = name;
         this.type = type;
@@ -10,22 +10,34 @@ class Item{
     }
 
 }
-export class DisassemblableItem extends Item{
+export class DisassemblableItem extends Item {
 
 }
 
-export class Weapon extends DisassemblableItem{
-
+export class Weapon extends DisassemblableItem {
+    constructor(...args) {
+        super(...args);
+        this.maxStackSize = 1;
+    }
 }
 
-export class Consumable extends DisassemblableItem{
-    
+export class Consumable extends DisassemblableItem {
+    constructor(...args) {
+        super(...args);
+        this.maxStackSize = 20;
+    }
 }
 
-export class CraftingMaterial extends Item{
-    
+export class CraftingMaterial extends Item {
+    constructor(...args) {
+        super(...args);
+        this.maxStackSize = 30;
+    }
 }
 
-export class Quest extends Item{
-    
+export class Quest extends Item {
+    constructor(...args) {
+        super(...args);
+        this.maxStackSize = 1;
+    }
 }
