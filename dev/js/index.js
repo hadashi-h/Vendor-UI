@@ -63,13 +63,15 @@ function setupGrid(container) {
       let item;
       for (let i = 0; i < itemsList.length; i++) {
         if (htmlItem._element.id == itemsList[i].id) {
-            item = itemsList[i];
-            break;
+          item = itemsList[i];
+          break;
         }
-    }
-      if(item instanceof Quest && result.grid._element.classList.contains('vendor-inventory')){
-        showMonit("vendor", "Nah, I don't want this");
-        return false;
+      }
+      if (result.grid) {
+        if (item instanceof Quest && result.grid._element.classList.contains('vendor-inventory')) {
+          showMonit("vendor", "Nah, I don't want this");
+          return false;
+        }
       }
       return result;
 
