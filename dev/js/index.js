@@ -108,7 +108,6 @@ function setupGrid(container) {
 }
 
 var dragSortOptions = {
-  action: 'swap',
   threshold: 50
 };
 
