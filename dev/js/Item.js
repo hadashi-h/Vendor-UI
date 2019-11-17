@@ -24,14 +24,12 @@ export class Weapon extends DisassemblableItem {
 export class Consumable extends DisassemblableItem {
     constructor(...args) {
         super(...args);
-        this.maxStackSize = 20;
     }
 }
 
 export class CraftingMaterial extends Item {
     constructor(...args) {
         super(...args);
-        this.maxStackSize = 30;
     }
 }
 
