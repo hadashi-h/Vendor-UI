@@ -34,9 +34,6 @@ function updateFunds() {
   $("#user-money").html(user.money);
   $("#vendor-money").html(vendor.money);
 }
-function allGrids() {
-  return grids;
-}
 
 function setupGrid(container) {
   return new Muuri(container, {
