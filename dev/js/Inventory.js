@@ -1,3 +1,5 @@
+import { Consumable, DisassemblableItem } from "./Item.js";
+
 export default class Inventory {
     constructor(id, allItems) {
         this.id = id;
@@ -38,9 +40,14 @@ export default class Inventory {
         }
 
         let usable = "";
+        let disasseble = "";
         let quantityDiv = "";
-        if(item.type == "consumable"){
+        if(item instanceof Consumable){
             usable = '<button id="use-item" type="button" class="btn-primary use-item">Use Item</button>';
+        }
+        if(item instanceof DisassemblableItem){
+            disasseble = '<p>'+ item.craftingMaterials +'</p>' +
+            '<button id="disassemble-item" type="button" class="btn-primary use-disassemble">Disassemble Item</button>';
         }
         if(quantity != 1){
             quantityDiv = '<div class="item-quantity">' +  quantity + '</div>'
@@ -56,11 +63,11 @@ export default class Inventory {
                   '<h6>' + item.price + '</h6>' +
                   '<p>' + item.description + '</p>' +
                   usable +
+                  disasseble +
               '</div>' +
           '</div>' +
         '</div>';
         div.innerHTML = itemTemplate;
         return div.firstChild;
     }
-
 }

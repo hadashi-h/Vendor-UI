@@ -59,12 +59,7 @@ function setupGrid(container) {
       let item;
       let element = htmlItem._element;
 
-      for (let i = 0; i < itemsList.length; i++) {
-        if (element.id == itemsList[i].id) {
-          item = itemsList[i];
-          break;
-        }
-      }
+      item = findItem(element.id, itemsList);
       if (resultGrid) {
         let sourceGridId = htmlItem._gridId;
         let destinationGridId = resultGrid._id;
@@ -119,10 +114,18 @@ var dragSortOptions = {
   threshold: 50
 };
 
+function findItem(itemId, list) {
+  for (let i = 0; i < list.length; i++) {
+    if (itemId == list[i].id) {
+      return list[i];
+    }
+  }
+}
 function dragStart(item) {
   item.getElement().style.width = item.getWidth() + 'px';
   item.getElement().style.height = item.getHeight() + 'px';
 }
+
 function dragReleaseEnd(item) {
   item.getElement().style.width = '';
   item.getElement().style.height = '';
@@ -142,6 +145,7 @@ function removeItem(e, inventory) {
     }
   });
 }
+
 //init
 function generateItemsTemplates(itemsList) {
   let ret = [];
@@ -186,9 +190,11 @@ function generateItems(amount) {
         break;
       case itemTypes.WEAPON:
         item = new Weapon(randomType, randomType, randomPrice, 'desc');
+        item.craftingMaterials = [1, 2];
         break;
       case itemTypes.CONSUMABLE:
         item = new Consumable(randomType, randomType, randomPrice, 'desc');
+        item.craftingMaterials = [3, 4];
         break;
       case itemTypes.CRAFTING:
         item = new CraftingMaterial(randomType, randomType, randomPrice, 'desc');
@@ -201,12 +207,26 @@ function generateItems(amount) {
   return ret;
 }
 
-
 //buttons
 $('.user-inventory').on('click', function (e) {
   if (elementMatches(e.target, '#use-item')) {
     removeItem(e, userInventory);
     user.speaks("Mmmm, delicious");
+  }
+});
+$('.user-inventory').on('click', function (e) {
+  if (elementMatches(e.target, '#disassemble-item')) {
+    removeItem(e, userInventory);
+    user.speaks("Welp, it's gone now");
+    let elem = elementClosest(e.target, '.item');
+    let id = elem.getAttribute('id');
+    let item = findItem(id, itemsList);
+    let craftingMaterialsArray = item.craftingMaterials;
+    for (let i = 0; i < craftingMaterialsArray.length; i++) {
+      let craftingMaterialId = craftingMaterialsArray[i];
+      let itemTemplate = user.inventory.getItemTemplate(craftingMaterialId, ++uuid, 1);
+      userInventory.add(itemTemplate);
+    }
   }
 });
 $('#sort-vendor-type').on('click', function () {

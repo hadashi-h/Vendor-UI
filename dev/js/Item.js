@@ -11,7 +11,10 @@ class Item {
 
 }
 export class DisassemblableItem extends Item {
-
+    constructor(...args) {
+        super(...args);
+        this.craftingMaterials = [];
+    }
 }
 
 export class Weapon extends DisassemblableItem {
