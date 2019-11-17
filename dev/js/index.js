@@ -72,39 +72,44 @@ function setupGrid(container) {
         }
       }
       if (resultGrid) {
-        let userGrid = resultGrid._element.classList.contains('user-inventory');
-        let stackAmount = $(element).find('.item-quantity').text();
-        let quantityToBuy = 1;
+        let sourceGridId = htmlItem._gridId;
+        let destinationGridId = resultGrid._id;
 
-        if (stackAmount) {
-          $('#choose-quantity-modal').modal('show');
-          quantityToBuy = 2;
-        }
+        if (sourceGridId != destinationGridId) {
+          let userGrid = resultGrid._element.classList.contains('user-inventory');
+          let stackAmount = $(element).find('.item-quantity').text();
+          let quantityToBuy = 1;
 
-        //user buys stuff
-        if (userGrid) {
-          if (user.buyItem(item.id, quantityToBuy) == false) {
-            vendor.speaks("Not enough money, kid");
-            return false;
+          if (stackAmount) {
+            $('#choose-quantity-modal').modal('show');
+            quantityToBuy = 2;
           }
+
+          //user buys stuff
+          if (userGrid) {
+            if (user.buyItem(item.id, quantityToBuy) == false) {
+              vendor.speaks("Not enough money, kid");
+              return false;
+            }
+            else {
+              vendor.sellItem(item.id, quantityToBuy);
+              vendor.speaks("Use it well");
+            }
+          }
+          //user sells stuff
           else {
-            vendor.sellItem(item.id, quantityToBuy);
-            vendor.speaks("Use it well");
-          }
-        }
-        //user sells stuff
-        else {
-          if (item instanceof Quest) {
-            vendor.speaks("Nah, I don't want this");
-            return false;
-          }
-          else if (vendor.buyItem(item.id, quantityToBuy) == false) {
-            vendor.speaks("Please, I cannot buy all your junk");
-            return false;
-          }
-          else {
-            user.sellItem(item.id, quantityToBuy);
-            user.speaks("I think you might want it");
+            if (item instanceof Quest) {
+              vendor.speaks("Nah, I don't want this");
+              return false;
+            }
+            else if (vendor.buyItem(item.id, quantityToBuy) == false) {
+              vendor.speaks("Please, I cannot buy all your junk");
+              return false;
+            }
+            else {
+              user.sellItem(item.id, quantityToBuy);
+              user.speaks("I think you might want it");
+            }
           }
         }
       }
@@ -143,7 +148,6 @@ function removeItem(e, inventory) {
     }
   });
 }
-
 //init
 function generateItemsTemplates(itemsList) {
   let ret = [];
@@ -162,7 +166,7 @@ function generateItemsTemplates(itemsList) {
       randomQuantity = 1 + Math.floor(Math.random() * 100);
     }
     vendor.addItem(item.id, randomQuantity);
-    
+
     while (randomQuantity > maxStackSize) {
       randomQuantity = randomQuantity - maxStackSize;
       let itemTemplate = vendor.inventory.getItemTemplate(item.id, ++uuid, maxStackSize);
