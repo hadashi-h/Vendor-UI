@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -9,6 +10,7 @@
     <link rel="stylesheet" href="http://localhost:3000/css/default-css.css">
     <link rel="stylesheet" href="http://localhost:3000/css/styles.css">
 </head>
+
 <body>
     <div class="container">
         <div class="row">
@@ -20,21 +22,25 @@
             <div class="col-sm-6">
                 <div class="d-flex justify-content-between">
                     <h2>Vendor</h2>
-                    <h2><div id="vendor-money"></div></h2>
+                    <h2>
+                        <div id="vendor-money"></div>
+                    </h2>
                 </div>
 
                 <ul class="nav nav-tabs" id="vendor-tabs" role="tablist">
                     <li class="nav-item">
-                        <a class="nav-link active" id="shop-tab" data-toggle="tab" href="#shop" role="tab" aria-controls="shop" aria-selected="true">Shop</a>
+                        <a class="nav-link active" id="shop-tab" data-toggle="tab" href="#shop" role="tab"
+                            aria-controls="shop" aria-selected="true">Shop</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" id="disassemble-tab" data-toggle="tab" href="#disassemble" role="tab" aria-controls="disassemble" aria-selected="false">Disassemble</a>
+                        <a class="nav-link" id="disassemble-tab" data-toggle="tab" href="#disassemble" role="tab"
+                            aria-controls="disassemble" aria-selected="false">Disassemble</a>
                     </li>
                 </ul>
                 <div class="tab-content" id="tab-content">
                     <div class="tab-pane fade show active" id="shop" role="tabpanel" aria-labelledby="shop-tab">
 
-                            <hr>
+                        <hr>
                         <button id="sort-vendor-type" class="btn-primary">Sort by type</button>
                         <button id="sort-vendor-price" class="btn-primary">Sort by price</button>
                         <hr>
@@ -42,26 +48,30 @@
 
                     </div>
                     <div class="tab-pane fade" id="disassemble" role="tabpanel" aria-labelledby="disassemble-tab">
+                        <hr>
                         <div class="vendor-disassemble grid"></div>
                     </div>
                 </div>
-                
+
             </div>
             <div class="col-sm-6">
                 <div class="d-flex justify-content-between">
                     <h2>User</h2>
-                    <h2><div id="user-money"></div></h2>
+                    <h2>
+                        <div id="user-money"></div>
+                    </h2>
                 </div>
-                
+
                 <hr>
                 <button id="sort-user-type" class="btn-primary">Sort by type</button>
                 <button id="sort-user-price" class="btn-primary">Sort by price</button>
                 <hr>
-                <div class="user-inventory grid"></div>                
+                <div class="user-inventory grid"></div>
             </div>
         </div>
     </div>
 </body>
 <script src="http://localhost:3000/js/default-js.js"></script>
 <script src="http://localhost:3000/js/index.js" type="module"></script>
+
 </html>
