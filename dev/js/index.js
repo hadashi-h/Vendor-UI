@@ -1,9 +1,6 @@
 import Person from "./Person.js";
 import { Weapon, Consumable, CraftingMaterial, Quest } from "./Item.js";
-import { elementMatches } from "./utils.js";
-import { elementClosest } from "./utils.js";
-import { compareItemType } from "./utils.js";
-import { compareItemPrice } from "./utils.js";
+import { elementMatches, elementClosest, compareItemType, compareItemPrice } from "./utils.js";
 
 var itemsList;
 var user;
@@ -88,7 +85,7 @@ function dragStart(item) {
   item.getElement().style.width = item.getWidth() + 'px';
   item.getElement().style.height = item.getHeight() + 'px';
 }
-function dragReleaseEnd(item){
+function dragReleaseEnd(item) {
   item.getElement().style.width = '';
   item.getElement().style.height = '';
   grids.forEach(grid => {
@@ -147,14 +144,14 @@ function generateItems(amount) {
         item = new Quest(randomType, randomType, randomPrice, 'desc');
         break;
       case itemTypes.WEAPON:
-          item = new Weapon(randomType, randomType, randomPrice, 'desc');
-          break;
+        item = new Weapon(randomType, randomType, randomPrice, 'desc');
+        break;
       case itemTypes.CONSUMABLE:
-          item = new Consumable(randomType, randomType, randomPrice, 'desc');
-          break;
+        item = new Consumable(randomType, randomType, randomPrice, 'desc');
+        break;
       case itemTypes.CRAFTING:
-          item = new CraftingMaterial(randomType, randomType, randomPrice, 'desc');
-          break;
+        item = new CraftingMaterial(randomType, randomType, randomPrice, 'desc');
+        break;
       default:
         break;
     }
@@ -163,10 +160,10 @@ function generateItems(amount) {
   return ret;
 }
 
-function showMonit(person, text){
+function showMonit(person, text) {
   $('body').append('<div class="monit ' + person + '">' + text + '</div>');
-  setTimeout(function() { 
-    $('.monit.'+ person).remove();
+  setTimeout(function () {
+    $('.monit.' + person).remove();
   }, 3000);
 }
 
