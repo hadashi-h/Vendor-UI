@@ -1,0 +1,128 @@
+
+/* Simple Shadow Mixin Using SCSS Maps for text, box and inset shadows
+ * @author Cody Reeves
+ * @access public
+ * @param $type - light or dark
+ * @param $level - 1, 2, 3, 4, or 5 by default
+ * -- Optional --
+ * @param $shadow-style - add inset as last value in mixen for inner shadow
+ * @param $text - set to text for text shadow
+ * @param $text-color - if inset and text is enabled, $inset-text-hack has to be enabled (result not guarenteed) -colors the text
+ * @return Desired Drop Shadow
+ *
+ * Usage  : @include shadow($type, $level, $shadow-style: null, $text: null, $text-color: null);
+ *        : @include shadow(light, $shadow, inset);
+ *        : @include shadow(t-shadow, 1, inset, text, $white);
+ */
+
+//set to true to enable warnings when useing the mixin
+$debug: false !default;
+
+//Set to true if you want to enable inset text shadows -- sorta works sorta dosent
+$inset-text-hack: false !default;
+
+//shadow vars that will be used -- set to default to if needed to be overwritten else where
+$shadow-d-1: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24)!default;
+$shadow-d-2: 0 3px 6px rgba(0, 0, 0, 0.16), 0 3px 6px rgba(0, 0, 0, 0.23) !default;
+$shadow-d-3: 0 10px 20px rgba(0, 0, 0, 0.19), 0 6px 6px rgba(0, 0, 0, 0.23) !default;
+$shadow-d-4: 0 14px 28px rgba(0, 0, 0, 0.25), 0 10px 10px rgba(0, 0, 0, 0.22) !default;
+$shadow-d-5: 0 19px 38px rgba(0, 0, 0, 0.30), 0 15px 12px rgba(0, 0, 0, 0.22) !default;
+$shadow-l-1: 0 2px 4px rgba(50,50,93,.1) !default;
+$shadow-l-2: 0 7px 14px rgba(50,50,93,.1), 0 3px 6px rgba(0,0,0,.08) !default;
+$shadow-l-3: 0 15px 35px rgba(50,50,93,.1), 0 5px 15px rgba(0,0,0,.07) !default;
+$shadow-l-4: 0 2px 35px rgba(50,50,93,.1), 0 8px 15px rgba(0,0,0,.07) !default;
+$shadow-l-5: 0 25px 40px rgba(50,50,93,.2), 0 8px 15px rgba(0,0,0,.1) !default;
+$shadow-text-1: 0px .5px .5px rgba(0,0,0,.1), 0 0 0 rgba(0,0,0,.1), 0px .5px .5px rgba(0,0,0,.1) !default;
+
+//Maps to create shadows
+$shadows-custom: (
+);
+
+$shadows-default: (
+	dark: (
+		1: $shadow-d-1,
+		2: $shadow-d-2,
+		3: $shadow-d-3,
+		4: $shadow-d-4,
+		5: $shadow-d-5
+	),
+	light: (
+		1: $shadow-l-1,
+		2: $shadow-l-2,
+		3: $shadow-l-3,
+		4: $shadow-l-4,
+		5: $shadow-l-5
+	),
+	t-shadow: (
+		1: $shadow-text-1
+	)
+);
+
+//Set up for shadows to support different browsers
+@mixin box-shadow($arg-1, $arg-2: null, $inset: null) {
+	@if $inset {
+		-webkit-box-shadow: $inset + ' ' + $arg-1, $inset + ' ' + $arg-2 ;
+		-moz-box-shadow: $inset + ' ' + $arg-1, $inset + ' ' + $arg-2 ;
+		box-shadow: $inset + ' ' + $arg-1, $inset + ' ' + $arg-2 ;
+	} @else {
+		-webkit-box-shadow: $arg-1, $arg-2;
+		-moz-box-shadow: $arg-1, $arg-2;
+		box-shadow: $arg-1, $arg-2;
+	}
+}
+
+@mixin text-shadow($arg-1, $arg-2: null, $inset: null) {
+	-webkit-text-shadow: $arg-1, $arg-2;
+	-moz-text-shadow: $arg-1, $arg-2;
+	text-shadow: $arg-1, $arg-2;
+}
+
+//Fetches deeply nested values from map
+@function map-deep-get($map, $keys...){
+	@each $key in $keys {
+		$map: map-get($map, $key);
+	}
+	@return $map;
+}
+
+//Put it all together
+@mixin shadow($type: dark, $level: 1, $shadow-style: null, $text: null, $text-color: null){
+	//This enables you to set default shadows light and dark and then set your own else where.
+	$shadows: map-merge($shadows-default, $shadows-custom);
+	@if map-has-key($shadows, $type){
+		//Fetches the value for shadow within map
+		$box-shadow: map-deep-get($shadows, $type, $level);
+		//checks to see if is a text or box shadow being called for
+		@if $text {
+			//if checks to see is hack is active and inset shadow is enabled --if not exits and compiles normal text shadow
+			@if $shadow-style == inset and $inset-text-hack == true {
+				@if $text-color {
+						color: rgba($text-color, 0.8) !important;
+						@include text-shadow($box-shadow);
+				} @else {
+					 @if $debug == true {
+							@warn 'Please set the text color for inset text shadow.';
+						}
+					@include text-shadow($box-shadow);
+				}
+			} @else {
+				@if $debug == true {
+					@warn 'Text shadows cannot have inset property. To enable set `$inset-text-hack` to true';
+				}
+				@include text-shadow($box-shadow);
+			}
+		} @else {
+			//Checks to see if there is 2 arguments or 1 -- Would like to find a better solution as this is guessing.
+			@if length($box-shadow) > 40 {
+				@include box-shadow($shadow-style $box-shadow);
+			} @else {
+				@include box-shadow($shadow-style $box-shadow $shadow-style);
+			}
+		}
+	} @else {
+		@if $debug == true {
+			//Throw error if you have not defined $type passed through mixin within $shadows
+			@warn '`#{$type}` is not a shadow' + 'Please make sure it is defined in `$shadows` map.';
+		}
+	}
+}

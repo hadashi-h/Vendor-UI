@@ -1,10 +1,12 @@
 .monit{
+    background-color: #1a1a1a;
+    color: white;
     position: fixed;
     padding: 1em;
     margin: auto;
     display: block;
     width: 200px;
-    border: 1px solid gray;
+    @include shadow(light, 5);
     &.vendor{
         left:0;
     }

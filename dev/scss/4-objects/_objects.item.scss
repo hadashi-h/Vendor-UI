@@ -9,6 +9,7 @@ $item-size: 80px;
   z-index: 1;
   border: 1px solid;
   background-color: white;
+  @include shadow(light, 2);
   &:hover {
     z-index: 9999;
   }
@@ -31,11 +32,12 @@ $item-size: 80px;
     background: white;
     padding: 1em;
     width: 300px;
-    border: 1px solid gray;
+    border: 1px solid lightgray;
     position: absolute;
     left: 100%;
     margin: 0% -50%;
     display: none;
+    @include shadow(light, 5);
   }
   &:hover > .item-content > .item-more {
     display: block;
