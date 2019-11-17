@@ -18,15 +18,6 @@ export default class Inventory {
          }
     }
 
-    getItemQuantity(itemId) { 
-        let array = this.items; 
-        for (let i = 0; i < array.length; i++) {
-            if (itemId == array[i].itemId) {
-                return array[i].quantity;
-            }
-        }
-    }
-
     getItem(itemId) { 
         let array = this.allItems; 
         for (let i = 0; i < array.length; i++) {
@@ -35,11 +26,6 @@ export default class Inventory {
             }
         }
     }
-
-    getInventory() {
-        return this.items;
-    }
-
     
     getItemTemplate(itemId, stackId, quantity){
         let item;
