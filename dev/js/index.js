@@ -20,7 +20,7 @@ var vendorInventory = grids[0];
 var userInventory = grids[1];
 
 $(document).ready(function () {
-  itemsList = generateItems(20);
+  itemsList = generateItems(10);
   vendor = new Person(2000, itemsList);
   vendorInventory.add(generateItemsTemplates(itemsList));
   vendorInventory.sort(compareItemType);
