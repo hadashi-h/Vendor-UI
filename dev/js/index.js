@@ -1,11 +1,13 @@
 import Person from "./Person.js";
 import { Weapon, Consumable, CraftingMaterial, Quest } from "./Item.js";
-import { elementMatches, elementClosest, compareItemType, compareItemPrice, updateFunds } from "./utils.js";
+import { elementMatches, elementClosest, compareItemType, compareItemPrice, updateFunds, findItem } from "./utils.js";
+import Transaction from "./Transaction.js";
 
 var itemsList;
 var user;
 var vendor;
 var uuid = 0;
+var currentTransaction;
 
 const itemTypes = {
   QUEST: "quest",
@@ -22,11 +24,14 @@ var userInventory = grids[1];
 
 $(document).ready(function () {
   itemsList = generateItems(10);
-  vendor = new Person(2000, itemsList, false);
+
+  vendor = new Person(20002, itemsList, false);
   vendorInventory.add(generateItemsTemplates(itemsList));
   vendorInventory.sort(compareItemType);
+
   userInventory.sort(compareItemType);
-  user = new Person(22000, itemsList, true);
+  user = new Person(20002, itemsList, true);
+
   updateFunds(user.money, vendor.money);
 });
 
@@ -50,97 +55,142 @@ function setupGrid(container) {
     dragReleseEasing: 'ease',
     dragSort: function () {
       return [vendorInventory, userInventory]
-    },
-    dragSortPredicate: function (htmlItem) {
-      let result = Muuri.ItemDrag.defaultSortPredicate(htmlItem, dragSortOptions);
-      let resultGrid = result.grid;
-      let item;
-      let element = htmlItem._element;
-
-      item = findItem(element.id, itemsList);
-      if (resultGrid) {
-        let sourceGridId = htmlItem._gridId;
-        let destinationGridId = resultGrid._id;
-
-        if (sourceGridId != destinationGridId) {
-          let userGrid = resultGrid._element.classList.contains('user-inventory');
-          let stackAmount = $(element).find('.item-quantity').text();
-          let quantityToBuy = 1;
-
-          if (stackAmount) {
-            $('#choose-quantity-modal').modal('show');
-            quantityToBuy = 2;
-          }
-
-          //user buys stuff
-          if (userGrid) {
-            if (user.buyItem(item.id, quantityToBuy) == false) {
-              vendor.speaks("Not enough money, kid");
-              return false;
-            }
-            else {
-              vendor.sellItem(item.id, quantityToBuy);
-              vendor.speaks("Use it well");
-            }
-          }
-          //user sells stuff
-          else {
-            if (item instanceof Quest) {
-              vendor.speaks("Nah, I don't want this");
-              return false;
-            }
-            else if (vendor.buyItem(item.id, quantityToBuy) == false) {
-              vendor.speaks("Please, I cannot buy all your junk");
-              return false;
-            }
-            else {
-              user.sellItem(item.id, quantityToBuy);
-              user.speaks("I think you might want it");
-            }
-          }
-        }
-      }
-      updateFunds(user.money, vendor.money);
-      return result;
     }
   }).on('dragStart', dragStart)
     .on('dragReleaseEnd', dragReleaseEnd);
 }
 
-var dragSortOptions = {
-  threshold: 50
-};
-
-function findItem(itemId, list) {
-  for (let i = 0; i < list.length; i++) {
-    if (itemId == list[i].id) {
-      return list[i];
-    }
-  }
-}
 function dragStart(item) {
   item.getElement().style.width = item.getWidth() + 'px';
   item.getElement().style.height = item.getHeight() + 'px';
 }
+let slider = $("#choose-quantity");
 
-function dragReleaseEnd(item) {
-  item.getElement().style.width = '';
-  item.getElement().style.height = '';
+let sliderValue = $(slider).val();
+$("#chosen-quantity").html(sliderValue);
+$("#chosen-quantity-price").html(sliderValue);
+
+$(slider).change(function () {
+  sliderValue = $(this).val();
+  $("#chosen-quantity").html(sliderValue);
+  $("#chosen-quantity-price").html(sliderValue);
+});
+
+function dragReleaseEnd(htmlItem) {
+  let buyer;
+  let seller;
+
+  if (htmlItem._gridId == 2) {
+    buyer = "user";
+    seller = "vendor";
+  }
+  else {
+    buyer = "vendor";
+    seller = "user";
+  }
+  let element = htmlItem._element;
+  let item = findItem(element.id, itemsList);
+
+  let stackAmount = $(element).find('.item-quantity').text();
+
+  currentTransaction = new Transaction(buyer, seller, item, 1);
+  if (stackAmount) {
+    $(slider).attr('max', stackAmount);
+    $('#max-value').html(stackAmount);
+    $('#choose-quantity-modal').modal('show');
+
+  }
+  else {
+    continueTransaction(currentTransaction);
+  }
+
+  htmlItem.getElement().style.width = '';
+  htmlItem.getElement().style.height = '';
   grids.forEach(grid => {
     grid.refreshItems().layout();
   });
 }
 
+function continueTransaction(currentTransaction) {
+  //user buys stuff
+  let quantityToBuy = currentTransaction.quantity;
+  let item = currentTransaction.item;
+  if (currentTransaction.buyer == "user") {
+    if (!user.checkFunds(item.price * quantityToBuy)) {
+      finalizeTransation(user, userInventory, vendor, vendorInventory, item, quantityToBuy, false);
+      vendor.speaks("Not enough money, kid");
+      return false;
+    }
+    else {
+      finalizeTransation(user, userInventory, vendor, vendorInventory, item, quantityToBuy, true);
+      vendor.speaks("Use it well");
+    }
+  }
+  //user sells stuff
+  else {
+    if (item instanceof Quest) {
+      finalizeTransation(vendor, vendorInventory, user, userInventory, item, quantityToBuy, false);
+      vendor.speaks("Nah, I don't want this");
+      return false;
+    }
+    if (!vendor.checkFunds(item.price * quantityToBuy)) {
+      finalizeTransation(vendor, vendorInventory, user, userInventory, item, quantityToBuy, false);
+      vendor.speaks("Please, I cannot buy all your junk");
+      return false;
+    }
+    else {
+      finalizeTransation(vendor, vendorInventory, user, userInventory, item, quantityToBuy, true);
+      user.speaks("I think you might want it");
+    }
+  }
+  updateFunds(user.money, vendor.money);
+}
+
+
 function removeItem(e, inventory) {
   let elem = elementClosest(e.target, '.item');
   let id = elem.getAttribute('id');
-  vendor.inventory.removeItem(+id, 1);
+  user.inventory.removeItem(+id, 1);
   inventory.hide(elem, {
     onFinish: function (items) {
       let item = items[0];
       inventory.remove(item, { removeElements: true });
     }
   });
+}
+
+function finalizeTransation(buyer, buyerInventory, seller, sellerInventory, item, quantity, successful) {
+  let beforeTransactionQuantity = seller.inventory.getItemQuantity(item.id);
+  if (!successful) {
+    let vendorItem = seller.inventory.getItemTemplate(item.id, ++uuid, beforeTransactionQuantity);
+    sellerInventory.add(vendorItem);
+
+    buyerInventory.hide(vendorItem, {
+      onFinish: function (items) {
+        let item2 = items[0];
+        buyerInventory.remove(item2, { removeElements: true });
+      }
+    });
+    return;
+  }
+  let leftForSeller = beforeTransactionQuantity - quantity;
+  let existingItem = buyer.inventory.getItem(item.id);
+
+  seller.sellItem(item.id, quantity);
+  buyer.buyItem(item.id, quantity);
+
+  if (leftForSeller > 0 && item.maxStackSize != 1) {
+    let vendorItem = seller.inventory.getItemTemplate(item.id, ++uuid, leftForSeller);
+    sellerInventory.add(vendorItem);
+  }
+
+  if (existingItem != undefined) {
+    $(buyerInventory._element).find('#' + item.id).find('.item-quantity').html(buyer.inventory.getItemQuantity(item.id));
+  }
+  else {
+    let userItem = buyer.inventory.getItemTemplate(item.id, ++uuid, quantity);
+    buyerInventory.add(userItem);
+  }
 }
 
 //init
@@ -237,4 +287,18 @@ $('#sort-user-type').on('click', function () {
 });
 $('#sort-user-price').on('click', function () {
   userInventory.sort(compareItemPrice);
+});
+
+$('#choose-quantity-cancel').on('click', function () {
+
+  if (currentTransaction.buyer == "user") {
+    finalizeTransation(user, userInventory, vendor, vendorInventory, currentTransaction.item, 0, false);
+  }
+  else {
+    finalizeTransation(vendor, vendorInventory, user, userInventory, currentTransaction.item, 0, false);
+  }
+})
+$('#choose-quantity-buy').on('click', function () {
+  currentTransaction.quantity = sliderValue;
+  continueTransaction(currentTransaction);
 });

@@ -36,3 +36,11 @@ export function updateFunds(userMoney, vendorMoney) {
     $("#user-money").html(userMoney);
     $("#vendor-money").html(vendorMoney);
 }
+
+export function findItem(itemId, list) {
+    for (let i = 0; i < list.length; i++) {
+      if (itemId == list[i].id) {
+        return list[i];
+      }
+    }
+  }

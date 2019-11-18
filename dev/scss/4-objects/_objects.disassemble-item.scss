@@ -1,0 +1,17 @@
+.disassemble-item{
+    display: none;
+}
+.user-inventory{
+    .disassemble-item{
+        display: block;
+    }
+}
+
+.crafting-material{
+    width: auto;
+    height: 50px;
+    border: 1px solid lightgray;
+    padding: .5em;
+    display: inline-block;
+    margin-right: 5px;
+}

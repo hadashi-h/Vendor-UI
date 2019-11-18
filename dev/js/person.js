@@ -1,4 +1,6 @@
 import Inventory from "./Inventory.js";
+import { findItem } from "./utils.js";
+
 var personsCounter = 0;
 
 export default class Person {
@@ -14,28 +16,31 @@ export default class Person {
         this.inventory.addItem(itemId, quantity);
     }
 
-    buyItem(itemId, quantity) {
-        let item = this.inventory.getItem(itemId);
-        let totalPrice = item.price * quantity;
-        if (totalPrice > this.money) {
+    checkFunds(price) {
+        if (price > this.money) {
             return false;
         }
-        else {
-            this.money = this.money - totalPrice;
-            return true;
-        }
+        return true;
+    }
+
+    buyItem(itemId, quantity) { 
+        let item = findItem(itemId, this.allItems);
+        let totalPrice = item.price * quantity;
+        this.money = this.money - totalPrice;
+        this.inventory.addItem(item.id, quantity);
     }
 
     sellItem(itemId, quantity) {
-        let item = this.inventory.getItem(itemId);
+        let item = findItem(itemId, this.allItems);
         let totalPrice = item.price * quantity;
 
         this.money = this.money + totalPrice;
+        this.inventory.removeItem(item.id, quantity);
     }
 
     speaks(text) {
         let person = "vendor";
-        if(this.isUser){
+        if (this.isUser) {
             person = "user";
         }
         $('body').append('<div class="monit ' + person + '">' + text + '</div>');
