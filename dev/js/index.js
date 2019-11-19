@@ -1,5 +1,5 @@
 import Person from "./Person.js";
-import { Weapon, Consumable, CraftingMaterial, Quest } from "./Item.js";
+import { Weapon, Quest } from "./Item.js";
 import { elementMatches, elementClosest, compareItemType, compareItemPrice, updateFunds, findItem, removeItem } from "./utils.js";
 import Transaction from "./Transaction.js";
 import { initialItems } from "./InitialItems.js";
