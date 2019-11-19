@@ -8,10 +8,10 @@ export default class Inventory {
         this.items = [];
     }
 
-    addItem(itemId, quantity) {
-
+    addItem(itemId, givenQuantity) {
+        let quantity = parseInt(givenQuantity);        
         let array = this.items;
-        for (var i = 0; i < array.length; i++) {
+        for (let i = 0; i < array.length; i++) {
             if (array[i].itemId === itemId) {
                 array[i].quantity += quantity;
                 return;
@@ -22,7 +22,7 @@ export default class Inventory {
 
     removeItem(itemId, quantity) {
         let array = this.items;
-        for (var i = 0; i < array.length; i++) {
+        for (let i = 0; i < array.length; i++) {
             if (array[i].itemId === itemId) {
                 if (array[i].quantity > quantity) {
                     array[i].quantity -= quantity;

@@ -44,3 +44,11 @@ export function findItem(itemId, list) {
       }
     }
   }
+  
+export function removeItem(inventory, itemToDestroy) {
+    inventory.hide(itemToDestroy, {
+      onFinish: function (item) {
+        inventory.remove(item, { removeElements: true });
+      }
+    });
+  }

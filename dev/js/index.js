@@ -1,6 +1,6 @@
 import Person from "./Person.js";
 import { Weapon, Consumable, CraftingMaterial, Quest } from "./Item.js";
-import { elementMatches, elementClosest, compareItemType, compareItemPrice, updateFunds, findItem } from "./utils.js";
+import { elementMatches, elementClosest, compareItemType, compareItemPrice, updateFunds, findItem, removeItem } from "./utils.js";
 import Transaction from "./Transaction.js";
 
 var itemsList;
@@ -8,6 +8,7 @@ var user;
 var vendor;
 var uuid = 0;
 var currentTransaction;
+var cloneMap = {};
 
 const itemTypes = {
   QUEST: "quest",
@@ -57,7 +58,18 @@ function setupGrid(container) {
       return [vendorInventory, userInventory]
     }
   }).on('dragStart', dragStart)
-    .on('dragReleaseEnd', dragReleaseEnd);
+    .on('dragReleaseEnd', dragReleaseEnd)
+    .on('receive', function (data) {
+      cloneMap[data.item._id] = {
+        item: data.item,
+        fromGrid: data.fromGrid,
+        toGrid: data.toGrid,
+        index: data.fromIndex
+      };
+    })
+    .on('send', function (data) {
+      delete cloneMap[data.item._id];
+    });
 }
 
 function dragStart(item) {
@@ -77,31 +89,44 @@ $(slider).change(function () {
 });
 
 function dragReleaseEnd(htmlItem) {
-  let buyer;
-  let seller;
+  let cloneData = cloneMap[htmlItem._id];
+  if (cloneData) {
+    delete cloneMap[htmlItem._id];
 
-  if (htmlItem._gridId == 2) {
-    buyer = "user";
-    seller = "vendor";
-  }
-  else {
-    buyer = "vendor";
-    seller = "user";
-  }
-  let element = htmlItem._element;
-  let item = findItem(element.id, itemsList);
+    if (cloneData.fromGrid != cloneData.toGrid) {
+      let clone = cloneData.item.getElement().cloneNode(true);
+      clone.setAttribute('style', 'display:none;');
+      clone.children[0].setAttribute('style', '');
+      clone.classList.add('clone')
+      cloneData.fromGrid.add(clone, { index: cloneData.index });
+      cloneData.fromGrid.show(clone);
 
-  let stackAmount = $(element).find('.item-quantity').text();
+      let buyer;
+      let seller;
 
-  currentTransaction = new Transaction(buyer, seller, item, 1);
-  if (stackAmount) {
-    $(slider).attr('max', stackAmount);
-    $('#max-value').html(stackAmount);
-    $('#choose-quantity-modal').modal('show');
+      if (htmlItem._gridId == 2) {
+        buyer = "user";
+        seller = "vendor";
+      }
+      else {
+        buyer = "vendor";
+        seller = "user";
+      }
 
-  }
-  else {
-    continueTransaction(currentTransaction);
+      let element = htmlItem._element;
+      let item = findItem(element.id, itemsList);
+      let stackAmount = $(element).find('.item-quantity').text();
+
+      currentTransaction = new Transaction(buyer, seller, item, 1);
+      if (stackAmount) {
+        $(slider).attr('max', stackAmount);
+        $('#max-value').html(stackAmount);
+        $('#choose-quantity-modal').modal('show');
+      }
+      else {
+        continueTransaction(currentTransaction);
+      }
+    }
   }
 
   htmlItem.getElement().style.width = '';
@@ -112,85 +137,85 @@ function dragReleaseEnd(htmlItem) {
 }
 
 function continueTransaction(currentTransaction) {
+
   //user buys stuff
   let quantityToBuy = currentTransaction.quantity;
   let item = currentTransaction.item;
+  let totalPrice = item.price * quantityToBuy;
+
   if (currentTransaction.buyer == "user") {
-    if (!user.checkFunds(item.price * quantityToBuy)) {
-      finalizeTransation(user, userInventory, vendor, vendorInventory, item, quantityToBuy, false);
+
+    if (!user.checkFunds(totalPrice)) {
+      cancelTransaction(user, userInventory, item);
       vendor.speaks("Not enough money, kid");
-      return false;
     }
     else {
-      finalizeTransation(user, userInventory, vendor, vendorInventory, item, quantityToBuy, true);
+      finalizeTransation(user, userInventory, vendor, vendorInventory, item, quantityToBuy);
       vendor.speaks("Use it well");
     }
   }
   //user sells stuff
-  else {
-    if (item instanceof Quest) {
-      finalizeTransation(vendor, vendorInventory, user, userInventory, item, quantityToBuy, false);
-      vendor.speaks("Nah, I don't want this");
-      return false;
-    }
-    if (!vendor.checkFunds(item.price * quantityToBuy)) {
-      finalizeTransation(vendor, vendorInventory, user, userInventory, item, quantityToBuy, false);
+  if (currentTransaction.buyer == "vendor") {
+
+    if (!vendor.checkFunds(totalPrice)) {
+      cancelTransaction(vendorInventory, item);
       vendor.speaks("Please, I cannot buy all your junk");
-      return false;
     }
     else {
-      finalizeTransation(vendor, vendorInventory, user, userInventory, item, quantityToBuy, true);
-      user.speaks("I think you might want it");
+      if (item instanceof Quest) {
+        cancelTransaction(vendor, vendorInventory, item);
+        vendor.speaks("Nah, I don't want this");
+      }
+      else {
+        finalizeTransation(vendor, vendorInventory, user, userInventory, item, quantityToBuy);
+        user.speaks("I think you might want it");
+      }
     }
   }
   updateFunds(user.money, vendor.money);
 }
 
-
-function removeItem(e, inventory) {
-  let elem = elementClosest(e.target, '.item');
-  let id = elem.getAttribute('id');
-  user.inventory.removeItem(+id, 1);
-  inventory.hide(elem, {
-    onFinish: function (items) {
-      let item = items[0];
-      inventory.remove(item, { removeElements: true });
-    }
-  });
+function cancelTransaction(buyer, buyerInventory, item) {
+  var notBoughtItem = $(buyerInventory._element).find('div#' + item.id);
+  console.log(notBoughtItem);
+  $(notBoughtItem).find('.item-quantity').html(buyer.inventory.getItemQuantity(item.id));
+  removeItem(buyerInventory, notBoughtItem[0]);
+  $('.clone').removeClass('clone');
 }
 
-function finalizeTransation(buyer, buyerInventory, seller, sellerInventory, item, quantity, successful) {
-  let beforeTransactionQuantity = seller.inventory.getItemQuantity(item.id);
-  if (!successful) {
-    let vendorItem = seller.inventory.getItemTemplate(item.id, ++uuid, beforeTransactionQuantity);
-    sellerInventory.add(vendorItem);
+function finalizeTransation(buyer, buyerInventory, seller, sellerInventory, item, quantity) {
 
-    buyerInventory.hide(vendorItem, {
-      onFinish: function (items) {
-        let item2 = items[0];
-        buyerInventory.remove(item2, { removeElements: true });
+  if (buyer.inventory.getItem(item.id)) {
+    buyer.buyItem(item.id, quantity);
+    let buyerItem = $(buyerInventory._element).find('div#' + item.id);
+    if (item.maxStackSize != 1) {
+      $(buyerItem).find('.item-quantity').html(buyer.inventory.getItemQuantity(item.id));
+
+      if (buyerItem.length > 1) {
+        removeItem(buyerInventory, buyerItem[0]);
       }
-    });
-    return;
-  }
-  let leftForSeller = beforeTransactionQuantity - quantity;
-  let existingItem = buyer.inventory.getItem(item.id);
-
-  seller.sellItem(item.id, quantity);
-  buyer.buyItem(item.id, quantity);
-
-  if (leftForSeller > 0 && item.maxStackSize != 1) {
-    let vendorItem = seller.inventory.getItemTemplate(item.id, ++uuid, leftForSeller);
-    sellerInventory.add(vendorItem);
-  }
-
-  if (existingItem != undefined) {
-    $(buyerInventory._element).find('#' + item.id).find('.item-quantity').html(buyer.inventory.getItemQuantity(item.id));
+    }
   }
   else {
-    let userItem = buyer.inventory.getItemTemplate(item.id, ++uuid, quantity);
-    buyerInventory.add(userItem);
+    buyer.buyItem(item.id, quantity);
+    $(buyerInventory._element).find('div#' + item.id).find('.item-quantity').html(buyer.inventory.getItemQuantity(item.id));
   }
+
+  seller.sellItem(item.id, quantity);
+  let sellerItem = $(sellerInventory._element).find('div#' + item.id);
+
+  if (seller.inventory.getItem(item.id)) {
+    if (item.maxStackSize != 1) {
+      $(sellerItem).find('.item-quantity').html(seller.inventory.getItemQuantity(item.id));
+    }
+    else {
+      removeItem(sellerInventory, sellerItem[0]);
+    }
+  }
+  else {
+    removeItem(sellerInventory, sellerItem[0]);
+  }
+  $('.clone').removeClass('clone');
 }
 
 //init
@@ -290,14 +315,13 @@ $('#sort-user-price').on('click', function () {
 });
 
 $('#choose-quantity-cancel').on('click', function () {
-
   if (currentTransaction.buyer == "user") {
-    finalizeTransation(user, userInventory, vendor, vendorInventory, currentTransaction.item, 0, false);
+    cancelTransaction(user, userInventory, currentTransaction.item);
   }
   else {
-    finalizeTransation(vendor, vendorInventory, user, userInventory, currentTransaction.item, 0, false);
+    cancelTransaction(vendor, vendorInventory, currentTransaction.item);
   }
-})
+});
 $('#choose-quantity-buy').on('click', function () {
   currentTransaction.quantity = sliderValue;
   continueTransaction(currentTransaction);
