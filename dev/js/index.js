@@ -1,6 +1,7 @@
 import Person from "./Person.js";
 import { Weapon, Consumable, CraftingMaterial, Quest } from "./Item.js";
 import { elementMatches, elementClosest, compareItemType, compareItemPrice, updateFunds, findItem, removeItem } from "./utils.js";
+import { generateItems } from "./randomGenerator.js";
 import Transaction from "./Transaction.js";
 
 var itemsList;
@@ -10,14 +11,7 @@ var uuid = 0;
 var currentTransaction;
 var cloneMap = {};
 
-const itemTypes = {
-  QUEST: "quest",
-  WEAPON: "weapon",
-  CONSUMABLE: "consumable",
-  CRAFTING: "crafting"
-};
 
-Object.freeze(itemTypes);
 
 const grids = [setupGrid('.vendor-inventory'), setupGrid('.user-inventory')];
 var vendorInventory = grids[0];
@@ -248,36 +242,6 @@ function generateItemsTemplates(itemsList) {
   return ret;
 }
 
-function generateItems(amount) {
-  let ret = [];
-  let keys = Object.keys(itemTypes);
-
-  for (let i = 0; i < amount; i++) {
-    let randomType = itemTypes[keys[keys.length * Math.random() << 0]];
-    let randomPrice = 100 + Math.floor(Math.random() * 2000);
-    let item;
-    switch (randomType) {
-      case itemTypes.QUEST:
-        item = new Quest(randomType, randomType, randomPrice, 'desc');
-        break;
-      case itemTypes.WEAPON:
-        item = new Weapon(randomType, randomType, randomPrice, 'desc');
-        item.craftingMaterials = [1, 2];
-        break;
-      case itemTypes.CONSUMABLE:
-        item = new Consumable(randomType, randomType, randomPrice, 'desc');
-        item.craftingMaterials = [3, 4];
-        break;
-      case itemTypes.CRAFTING:
-        item = new CraftingMaterial(randomType, randomType, randomPrice, 'desc');
-        break;
-      default:
-        break;
-    }
-    ret.push(item);
-  }
-  return ret;
-}
 
 //buttons
 $('.user-inventory').on('click', function (e) {
