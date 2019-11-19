@@ -50,6 +50,16 @@ function setupGrid(container) {
     dragReleseEasing: 'ease',
     dragSort: function () {
       return [vendorInventory, userInventory]
+    },
+    dragStartPredicate: function (htmlItem, event) {
+
+      let item = htmlItem._element;
+      if ($(item).hasClass('disabled')) {
+        return false;
+      }
+      else {
+        return Muuri.ItemDrag.defaultStartPredicate(htmlItem, event);
+      }
     }
   }).on('dragStart', dragStart)
     .on('dragReleaseEnd', dragReleaseEnd)
@@ -156,14 +166,8 @@ function continueTransaction(currentTransaction) {
       vendor.speaks("Please, I cannot buy all your junk");
     }
     else {
-      if (item instanceof Quest) {
-        cancelTransaction(vendor, vendorInventory, item);
-        vendor.speaks("Nah, I don't want this");
-      }
-      else {
-        finalizeTransation(vendor, vendorInventory, user, userInventory, item, quantityToBuy);
-        user.speaks("I think you might want it");
-      }
+      finalizeTransation(vendor, vendorInventory, user, userInventory, item, quantityToBuy);
+      user.speaks("I think you might want it");
     }
   }
   updateFunds(user.money, vendor.money);
@@ -192,7 +196,11 @@ function finalizeTransation(buyer, buyerInventory, seller, sellerInventory, item
   }
   else {
     buyer.buyItem(item.id, quantity);
-    $(buyerInventory._element).find('div#' + item.id).find('.item-quantity').html(buyer.inventory.getItemQuantity(item.id));
+    let boughtItem = $(buyerInventory._element).find('div#' + item.id);
+    $(boughtItem[0]).find('.item-quantity').html(buyer.inventory.getItemQuantity(item.id));
+    if (item instanceof Quest) {
+      $(boughtItem[1]).addClass('disabled');
+    }
   }
 
   seller.sellItem(item.id, quantity);
