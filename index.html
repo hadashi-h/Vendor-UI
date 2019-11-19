@@ -52,14 +52,11 @@
     </div>
 
     <div class="modal fade" id="choose-quantity-modal" tabindex="-1" role="dialog"
-        aria-labelledby="choose-quantity-modal-title" aria-hidden="true">
+        aria-labelledby="choose-quantity-modal-title" aria-hidden="true" data-backdrop="static" data-keyboard="false" >
         <div class="modal-dialog modal-dialog-centered" role="document">
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title" id="choose-quantity-modal-title">Choose the amount</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
                 </div>
                 <div class="modal-body">
 
@@ -83,8 +80,6 @@
         </div>
     </div>
 
-    <div class="modal fade" id="disassemble-modal" tabindex="-1" role="dialog"
-    aria-labelledby="choose-quantity-modal-title" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered" role="document">
         <div class="modal-content">
             <div class="modal-header">
@@ -105,6 +100,8 @@
                         <input type="range" min="1" max="100" value="1" class="flex-grow-1 slider" id="disassemble-slider">
                         <div id="max-value" class="range-value">14</div>
                     </div>
+    <div class="modal fade" id="disassemble-modal" tabindex="-1" role="dialog" data-id="3"
+        aria-labelledby="choose-quantity-modal-title" aria-hidden="true" data-backdrop="static" data-keyboard="false" >
 
                     <p class="text-center"><span id="chosen-quantity"></span></p>
                 </div>
