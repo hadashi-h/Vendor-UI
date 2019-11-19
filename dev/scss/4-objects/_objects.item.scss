@@ -8,6 +8,7 @@ $item-size: 80px;
   margin: 3px;
   z-index: 1;
   border: 1px solid;
+  border-radius: 3px;
   background-color: white;
   @include shadow(light, 2);
   &:hover {
@@ -18,6 +19,9 @@ $item-size: 80px;
     position: relative;
     width: 100%;
     height: 100%;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    padding: 0 2px;
   }
   .item-quantity {
     position: absolute;
@@ -39,7 +43,7 @@ $item-size: 80px;
     display: none;
     @include shadow(light, 5);
   }
-  &:hover > .item-content > .item-more {
+  &:hover > .item-more {
     display: block;
   }
   &.muuri-item-dragging,
@@ -47,7 +51,7 @@ $item-size: 80px;
     z-index: 9999;
   }
   &.muuri-item-dragging {
-    cursor: move; 
+    cursor: move;
     z-index: 3;
   }
   &.muuri-item-releasing {
@@ -77,5 +81,15 @@ $item-size: 80px;
   &.crafting {
     border-color: red;
     color: red;
+  }
+  &.disabled { 
+    cursor: not-allowed; 
+    .item-more:after{
+      content: "You cannot sell this item";
+      padding: 5px 0;
+      border-top: 1px solid;
+      width: 100%;
+      color: red;
+    }
   }
 }
