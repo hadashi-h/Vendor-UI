@@ -20,18 +20,18 @@ export function generateItems(amount) {
       let item;
       switch (randomType) {
         case itemTypes.QUEST:
-          item = new Quest(randomType, randomType, randomPrice, 'desc');
+          item = new Quest(i, randomType, randomType, randomPrice, 'desc');
           break;
         case itemTypes.WEAPON:
-          item = new Weapon(randomType, randomType, randomPrice, 'desc');
+          item = new Weapon(i, randomType, randomType, randomPrice, 'desc');
           item.craftingMaterials = [1, 2];
           break;
         case itemTypes.CONSUMABLE:
-          item = new Consumable(randomType, randomType, randomPrice, 'desc');
+          item = new Consumable(i, randomType, randomType, randomPrice, 'desc');
           item.craftingMaterials = [3, 4];
           break;
         case itemTypes.CRAFTING:
-          item = new CraftingMaterial(randomType, randomType, randomPrice, 'desc');
+          item = new CraftingMaterial(i, randomType, randomType, randomPrice, 'desc');
           break;
         default:
           break;

@@ -1,8 +1,8 @@
 import Person from "./Person.js";
 import { Weapon, Consumable, CraftingMaterial, Quest } from "./Item.js";
 import { elementMatches, elementClosest, compareItemType, compareItemPrice, updateFunds, findItem, removeItem } from "./utils.js";
-import { generateItems } from "./randomGenerator.js";
 import Transaction from "./Transaction.js";
+import { initialItems } from "./InitialItems.js";
 
 var itemsList;
 var user;
@@ -22,7 +22,7 @@ var vendorInventory = grids[0];
 var userInventory = grids[1];
 
 $(document).ready(function () {
-  itemsList = generateItems(10);
+  itemsList = initialItems();
 
   vendor = new Person(20002, itemsList, false);
   vendorInventory.add(generateItemsTemplates(itemsList));

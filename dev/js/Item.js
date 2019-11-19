@@ -1,8 +1,6 @@
-var itemsCounter = 0;
-
 class Item {
-    constructor(name, type, price, description) {
-        this.id = itemsCounter++;
+    constructor(id, name, type, price, description) { 
+        this.id = id;
         this.name = name;
         this.type = type;
         this.price = price;
@@ -11,9 +9,9 @@ class Item {
 
 }
 export class DisassemblableItem extends Item {
-    constructor(...args) {
-        super(...args);
-        this.craftingMaterials = [];
+    constructor(id, name, type, price, description, materials) { 
+        super(id, name, type, price, description);
+        this.craftingMaterials = materials;
     }
 }
 
