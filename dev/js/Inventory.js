@@ -64,7 +64,6 @@ export default class Inventory {
 
         let usable = "";
         let disasseble = "";
-        let quantityDiv = "";
         if (item instanceof Consumable) {
             usable = '<button id="use-item" type="button" class="btn-primary use-item">Use Item</button>';
         }
@@ -76,16 +75,13 @@ export default class Inventory {
                 disasseble += '<div class="crafting-material">' + craftingMaterial.name + '</div>';
             }
             disasseble += '<button id="disassemble-item" type="button" class="btn-primary disassemble-item">Disassemble Item</button>';
-        }
-        if (quantity != 1) {
-            quantityDiv = '<div class="item-quantity">' + quantity + '</div>'
-        }
+        } 
         let div = document.createElement('div');
         let itemTemplate = '' +
             '<div id="' + item.id + '" class="item ' + item.type + '" data-stackId="' + stackId + '" data-type="' + item.type + '" data-price=" ' + item.price + '">' +
                 '<div class="item-content">' +
                     item.name + ' $' + item.price +
-                    quantityDiv +
+                    '<div class="item-quantity">' + quantity + '</div>' +
                 '</div>' + 
                 '<div class="item-more">' +
                     '<h5>' + item.name + '</h5>' +

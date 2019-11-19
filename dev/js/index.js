@@ -12,9 +12,9 @@ var currentTransaction;
 var cloneMap = {};
 
 let buySlider = $("#choose-quantity");
-let buySliderValue = $(buySlider).val();
+let buySliderValue = 1;
 let disassembleSlider = $("#disassemble-slider");
-let disassembleSliderValue = $(disassembleSlider).val();
+let disassembleSliderValue = 1;
 
 
 const grids = [setupGrid('.vendor-inventory'), setupGrid('.user-inventory')];
@@ -116,8 +116,7 @@ function dragReleaseEnd(htmlItem) {
       let stackAmount = $(element).find('.item-quantity').text();
 
       currentTransaction = new Transaction(buyer, seller, item, 1);
-      if (stackAmount) {
-
+      if (+stackAmount != 1) {
         $(buySlider).attr('max', stackAmount);
         $('#max-value').html(stackAmount);
         $('#item-name').html(item.name);
@@ -297,13 +296,11 @@ $('.user-inventory').on('click', function (e) {
     $('#disassemble-modal #item-name').html(item.name);
 
     let itemQuantity = $(clickedItem).find('.item-quantity');
-    let stackAmount = $(itemQuantity[0]).text();
-    let disassembledAmount = 1;
-    if (stackAmount) {
+    let stackAmount = $(itemQuantity[0]).html();
+    if (+stackAmount != 1) {
       $(disassembleSlider).attr('max', stackAmount);
       $('#disassemble-modal #max-value').html(stackAmount);
       $("#disassemble-modal #chosen-quantity").html(disassembleSliderValue);
-      disassembledAmount = disassembleSliderValue;
       $('#slider-wrapper').show();
     }
     else {
@@ -312,20 +309,25 @@ $('.user-inventory').on('click', function (e) {
 
     $(disassembleSlider).on("input change", function () {
       disassembleSliderValue = $(this).val();
-      disassembledAmount = disassembleSliderValue;
       $("#disassemble-modal #chosen-quantity").html(disassembleSliderValue);
     });
+    $('#disassemble-modal').attr("data-id", id);
 
     $('#disassemble-modal').modal('show');
-
-    $('#dissasemble-accept').on('click', function () {
-      dissasembleItem(item, disassembledAmount, clickedItem, craftingMaterialsArray);
-      user.speaks("Welp, it's gone now");
-    });
   }
 });
 
-function dissasembleItem(item, quantity, templateItem, craftingMaterialsArray) {
+$('#dissasemble-accept').on('click', function () {
+  let itemId = $('#disassemble-modal').attr('data-id');
+  dissasembleItem(+itemId, disassembleSliderValue);
+  user.speaks("Welp, it's gone now");
+});
+
+function dissasembleItem(itemId, quantity) {
+  let item = findItem(itemId, itemsList);
+  let craftingMaterialsArray = item.craftingMaterials;
+  let templateItem = $(userInventory._element).find('div#' + item.id)[0];
+
   user.removeItem(item.id, quantity);
   if (user.inventory.getItem(item.id)) {
     if (item.maxStackSize != 1) {
@@ -345,11 +347,8 @@ function dissasembleItem(item, quantity, templateItem, craftingMaterialsArray) {
       let craftingMaterialId = craftingMaterialsArray[i];
       let craftingMaterialAmount = 1;
       let itemTemplate = user.inventory.getItemTemplate(craftingMaterialId, ++uuid, craftingMaterialAmount);
-      
-      let craftingItem = findItem(craftingMaterialId, itemsList);
 
-   ///   user.addItem(craftingMaterialId, craftingMaterialAmount);
-    //  userInventory.add(itemTemplate);
+      let craftingItem = findItem(craftingMaterialId, itemsList);
 
       if (user.inventory.getItem(craftingMaterialId)) {
         user.addItem(craftingMaterialId, craftingMaterialAmount);
@@ -357,7 +356,6 @@ function dissasembleItem(item, quantity, templateItem, craftingMaterialsArray) {
 
         if (craftingItem.maxStackSize != 1) {
           $(buyerItem).find('.item-quantity').html(user.inventory.getItemQuantity(craftingMaterialId));
-
           if (buyerItem.length > 1) {
             removeItem(userInventory, buyerItem[0]);
           }
@@ -366,13 +364,8 @@ function dissasembleItem(item, quantity, templateItem, craftingMaterialsArray) {
       else {
         user.addItem(craftingMaterialId, craftingMaterialAmount);
         userInventory.add(itemTemplate);
-
         let boughtItem = $(userInventory._element).find('div#' + craftingMaterialId);
-
         $(boughtItem[0]).find('.item-quantity').html(user.inventory.getItemQuantity(craftingMaterialId));
-        if (item instanceof Quest) {
-          $(boughtItem[1]).addClass('disabled');
-        }
       }
     }
   }
