@@ -82,6 +82,42 @@
             </div>
         </div>
     </div>
+
+    <div class="modal fade" id="disassemble-modal" tabindex="-1" role="dialog"
+    aria-labelledby="choose-quantity-modal-title" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="choose-quantity-modal-title">
+                    <span id="item-name"></span><br />
+                </h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <p>Will be disassembled into:</p>
+                <div id="crafting-materials"></div>
+                <div id="slider-wrapper">
+                    <p>Choose the amount to be disassembled:</p>
+                    <div class="d-flex">
+                        <div id="min-value" class="range-value">1</div>
+                        <input type="range" min="1" max="100" value="1" class="flex-grow-1 slider" id="disassemble-slider">
+                        <div id="max-value" class="range-value">14</div>
+                    </div>
+
+                    <p class="text-center"><span id="chosen-quantity"></span></p>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary"
+                    data-dismiss="modal">Cancel</button>
+                <button id="dissasemble-accept" type="button" class="btn btn-primary"
+                    data-dismiss="modal">Accept</button>
+            </div>
+        </div>
+    </div>
+</div>
 </body>
 <script src="http://localhost:3000/js/default-js.js"></script>
 <script src="http://localhost:3000/js/index.js" type="module"></script>
