@@ -39,16 +39,16 @@ export function updateFunds(userMoney, vendorMoney) {
 
 export function findItem(itemId, list) {
     for (let i = 0; i < list.length; i++) {
-      if (itemId == list[i].id) {
-        return list[i];
-      }
+        if (itemId == list[i].id) {
+            return list[i];
+        }
     }
-  }
-  
+}
+
 export function removeItem(inventory, itemToDestroy) {
     inventory.hide(itemToDestroy, {
-      onFinish: function (item) {
-        inventory.remove(item, { removeElements: true });
-      }
+        onFinish: function (item) {
+            inventory.remove(item, { removeElements: true });
+        }
     });
-  }
+}

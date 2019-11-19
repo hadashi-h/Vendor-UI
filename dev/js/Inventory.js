@@ -83,17 +83,17 @@ export default class Inventory {
         let div = document.createElement('div');
         let itemTemplate = '' +
             '<div id="' + item.id + '" class="item ' + item.type + '" data-stackId="' + stackId + '" data-type="' + item.type + '" data-price=" ' + item.price + '">' +
-            '<div class="item-content">' +
-            item.name + ' ' + item.price +
-            quantityDiv +
-            '<div class="item-more">' +
-            '<h5>' + item.name + '</h5>' +
-            '<h6>' + item.price + '</h6>' +
-            '<p>' + item.description + '</p>' +
-            usable +
-            disasseble +
-            '</div>' +
-            '</div>' +
+                '<div class="item-content">' +
+                    item.name + ' $' + item.price +
+                    quantityDiv +
+                '</div>' + 
+                '<div class="item-more">' +
+                    '<h5>' + item.name + '</h5>' +
+                    '<h6>$' + item.price + '</h6>' +
+                    '<p>' + item.description + '</p>' +
+                    usable +
+                    disasseble +
+                '</div>' +
             '</div>';
         div.innerHTML = itemTemplate;
         return div.firstChild;
