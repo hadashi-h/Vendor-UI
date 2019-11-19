@@ -18,35 +18,27 @@
                 <h1>Shop</h1>
             </div>
         </div>
+        <hr />
         <div class="row">
             <div class="col-sm-6">
                 <div class="d-flex justify-content-between">
                     <h2>Vendor</h2>
-                    <h2>
-                        <div id="vendor-money"></div>
-                    </h2>
-                </div>
-
+                    <h2>$<span id="vendor-money"></span></h2>
+                </div> 
+                <div class="vendor-inventory grid mb-3 mt-3"></div> 
                 <hr>
                 <button id="sort-vendor-type" class="btn-primary">Sort by type</button>
                 <button id="sort-vendor-price" class="btn-primary">Sort by price</button>
-                <hr>
-                <div class="vendor-inventory grid"></div>
-
             </div>
             <div class="col-sm-6">
                 <div class="d-flex justify-content-between">
                     <h2>User</h2>
-                    <h2>
-                        <div id="user-money"></div>
-                    </h2>
-                </div>
-
+                    <h2>$<span id="user-money"></span></h2>
+                </div> 
+                <div class="user-inventory grid mb-3 mt-3"></div> 
                 <hr>
                 <button id="sort-user-type" class="btn-primary">Sort by type</button>
                 <button id="sort-user-price" class="btn-primary">Sort by price</button>
-                <hr>
-                <div class="user-inventory grid"></div>
             </div>
         </div>
     </div>
@@ -59,8 +51,7 @@
                     <h5 class="modal-title" id="choose-quantity-modal-title">Choose the amount</h5>
                 </div>
                 <div class="modal-body">
-
-                    <p class="text-center"><span id="item-name"></span> <span id="item-price"></span></p> 
+                    <p class="text-center"><span id="item-name"></span> <span id="item-price"></span></p>
                     <div class="d-flex">
                         <div id="min-value" class="range-value">1</div>
                         <input type="range" min="1" max="100" value="1" class="flex-grow-1 slider" id="choose-quantity">
@@ -80,41 +71,38 @@
         </div>
     </div>
 
-    <div class="modal-dialog modal-dialog-centered" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="choose-quantity-modal-title">
-                    <span id="item-name"></span><br />
-                </h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <div class="modal-body">
-                <p>Will be disassembled into:</p>
-                <div id="crafting-materials"></div>
-                <div id="slider-wrapper">
-                    <p>Choose the amount to be disassembled:</p>
-                    <div class="d-flex">
-                        <div id="min-value" class="range-value">1</div>
-                        <input type="range" min="1" max="100" value="1" class="flex-grow-1 slider" id="disassemble-slider">
-                        <div id="max-value" class="range-value">14</div>
-                    </div>
     <div class="modal fade" id="disassemble-modal" tabindex="-1" role="dialog" data-id="3"
         aria-labelledby="choose-quantity-modal-title" aria-hidden="true" data-backdrop="static" data-keyboard="false" >
-
-                    <p class="text-center"><span id="chosen-quantity"></span></p>
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="choose-quantity-modal-title">
+                        <span id="item-name"></span><br />
+                    </h5>
                 </div>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary"
-                    data-dismiss="modal">Cancel</button>
-                <button id="dissasemble-accept" type="button" class="btn btn-primary"
-                    data-dismiss="modal">Accept</button>
+                <div class="modal-body">
+                    <p>Will be disassembled into:</p>
+                    <div id="crafting-materials"></div>
+                    <div id="slider-wrapper">
+                        <p>Choose the amount to be disassembled:</p>
+                        <div class="d-flex">
+                            <div id="min-value" class="range-value">1</div>
+                            <input type="range" min="1" max="100" value="1" class="flex-grow-1 slider"
+                                id="disassemble-slider">
+                            <div id="max-value" class="range-value">14</div>
+                        </div>
+
+                        <p class="text-center"><span id="chosen-quantity"></span></p>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                    <button id="dissasemble-accept" type="button" class="btn btn-primary"
+                        data-dismiss="modal">Accept</button>
+                </div>
             </div>
         </div>
     </div>
-</div>
 </body>
 <script src="http://localhost:3000/js/default-js.js"></script>
 <script src="http://localhost:3000/js/index.js" type="module"></script>
