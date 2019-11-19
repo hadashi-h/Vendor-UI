@@ -253,8 +253,25 @@ function generateItemsTemplates(itemsList) {
 
 //buttons
 $('.user-inventory').on('click', function (e) {
+  //USING ITEMS
   if (elementMatches(e.target, '#use-item')) {
-    removeItem(e, userInventory);
+
+    let clickedItem = elementClosest(e.target, '.item');
+    let id = clickedItem.getAttribute('id');
+    user.inventory.removeItem(+id, 1);
+
+    let eatenItem = user.inventory.getItem(id);
+    if (eatenItem) {
+      if (eatenItem.maxStackSize != 1) {
+        $(clickedItem).find('.item-quantity').html(user.inventory.getItemQuantity(id));
+      }
+      else {
+        removeItem(userInventory, clickedItem);
+      }
+    }
+    else {
+      removeItem(userInventory, clickedItem);
+    }
     user.speaks("Mmmm, delicious");
   }
 });

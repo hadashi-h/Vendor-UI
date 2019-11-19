@@ -56,27 +56,28 @@
         <div class="modal-dialog modal-dialog-centered" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="choose-quantity-modal-title">How much do you need?</h5>
+                    <h5 class="modal-title" id="choose-quantity-modal-title">Choose the amount</h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
                 <div class="modal-body">
 
+                    <p class="text-center"><span id="item-name"></span> <span id="item-price"></span></p> 
                     <div class="d-flex">
                         <div id="min-value" class="range-value">1</div>
-                        <input type="range" min="1" max="100" value="1" class="flex-grow-1 slider"
-                            id="choose-quantity">
+                        <input type="range" min="1" max="100" value="1" class="flex-grow-1 slider" id="choose-quantity">
                         <div id="max-value" class="range-value">14</div>
                     </div>
 
-                    <p>Quantity: <span id="chosen-quantity"></span></p>
-                    <p>Price: <span id="chosen-quantity-price"></span></p>
+                    <p class="text-center"><span id="chosen-quantity"></span></p>
+                    <p class="text-center">Total price: $<span id="chosen-quantity-price"></span></p>
                 </div>
                 <div class="modal-footer">
                     <button id="choose-quantity-cancel" type="button" class="btn btn-secondary"
                         data-dismiss="modal">Cancel</button>
-                    <button id="choose-quantity-buy" type="button" class="btn btn-primary" data-dismiss="modal">Buy</button>
+                    <button id="choose-quantity-buy" type="button" class="btn btn-primary"
+                        data-dismiss="modal">Accept</button>
                 </div>
             </div>
         </div>

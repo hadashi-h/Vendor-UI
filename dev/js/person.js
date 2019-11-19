@@ -15,6 +15,9 @@ export default class Person {
     addItem(itemId, quantity) {
         this.inventory.addItem(itemId, quantity);
     }
+    removeItem(itemId, quantity) {
+        this.inventory.removeItem(itemId, quantity);
+    }
 
     checkFunds(price) {
         if (price > this.money) {
