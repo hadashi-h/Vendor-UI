@@ -116,13 +116,16 @@ function dragReleaseEnd(htmlItem) {
       let stackAmount = $(element).find('.item-quantity').text();
 
       currentTransaction = new Transaction(buyer, seller, item, 1);
+
+      $(buySlider).val(1);
+      buySliderValue = 1;
       if (+stackAmount != 1) {
         $(buySlider).attr('max', stackAmount);
-        $('#max-value').html(stackAmount);
-        $('#item-name').html(item.name);
-        $('#item-price').html(item.price);
-        $("#chosen-quantity").html(buySliderValue);
-        $("#chosen-quantity-price").html($("#item-price").html() * buySliderValue);
+        $('#choose-quantity-modal #max-value').html(stackAmount);
+        $('#choose-quantity-modal #item-name').html(item.name);
+        $('#choose-quantity-modal #item-price').html(item.price);
+        $("#choose-quantity-modal #chosen-quantity").html(buySliderValue);
+        $("#choose-quantity-modal #chosen-quantity-price").html($("#item-price").html() * buySliderValue);
 
         $('#choose-quantity-modal').modal('show');
       }
@@ -141,8 +144,8 @@ function dragReleaseEnd(htmlItem) {
 
 $("#choose-quantity").on("input change", function () {
   buySliderValue = $(this).val();
-  $("#chosen-quantity-price").html($("#item-price").html() * buySliderValue);
-  $("#chosen-quantity").html(buySliderValue);
+  $("#choose-quantity-modal #chosen-quantity-price").html($("#choose-quantity-modal #item-price").html() * buySliderValue);
+  $("#choose-quantity-modal #chosen-quantity").html(buySliderValue);
 });
 
 function continueTransaction(currentTransaction) {
@@ -281,6 +284,8 @@ $('.user-inventory').on('click', function (e) {
   //DISASSEMBLING ITEMS
   if (elementMatches(e.target, '#disassemble-item')) {
     $('#disassemble-modal #crafting-materials').empty();
+    $(disassembleSlider).val(1);
+    disassembleSliderValue = 1;
 
     let clickedItem = elementClosest(e.target, '.item');
     let id = clickedItem.getAttribute('id');
@@ -306,15 +311,14 @@ $('.user-inventory').on('click', function (e) {
     else {
       $('#slider-wrapper').hide();
     }
-
-    $(disassembleSlider).on("input change", function () {
-      disassembleSliderValue = $(this).val();
-      $("#disassemble-modal #chosen-quantity").html(disassembleSliderValue);
-    });
     $('#disassemble-modal').attr("data-id", id);
-
     $('#disassemble-modal').modal('show');
   }
+});
+
+$(disassembleSlider).on("input change", function () {
+  disassembleSliderValue = $(this).val();
+  $("#disassemble-modal #chosen-quantity").html(disassembleSliderValue);
 });
 
 $('#dissasemble-accept').on('click', function () {
