@@ -1,3 +1,4 @@
+import { Consumable, DisassemblableItem } from "./Item.js";
 
 export function elementMatches(element, selector) {
     var p = Element.prototype;
@@ -29,9 +30,6 @@ export function compareItemPrice(a, b) {
     return +aVal < +bVal ? -1 : +aVal > +bVal ? 1 : 0;
 }
 
-
-
-
 export function updateFunds(userMoney, vendorMoney) {
     $("#user-money").html(userMoney);
     $("#vendor-money").html(vendorMoney);
@@ -51,4 +49,46 @@ export function removeItem(inventory, itemToDestroy) {
             inventory.remove(item, { removeElements: true });
         }
     });
+}
+
+export function getItemTemplate(itemId, quantity, allItemsList) {
+    let item;
+    for (let i = 0; i < allItemsList.length; i++) {
+        if (itemId == allItemsList[i].id) {
+            item = allItemsList[i];
+            break;
+        }
+    }
+
+    let usable = "";
+    let disasseble = "";
+    if (item instanceof Consumable) {
+        usable = '<button id="use-item" type="button" class="btn-primary use-item">Use Item</button>';
+    }
+    if (item instanceof DisassemblableItem) {
+        let craftingMaterialsList = item.craftingMaterials;
+        for (let i = 0; i < craftingMaterialsList.length; i++) {
+            let craftingMaterialId = craftingMaterialsList[i];
+            let craftingMaterial = findItem(craftingMaterialId, allItemsList);
+            disasseble += '<div class="crafting-material">' + craftingMaterial.name + '</div>';
+        }
+        disasseble += '<button id="disassemble-item" type="button" class="btn-primary disassemble-item">Disassemble Item</button>';
+    }
+    let div = document.createElement('div');
+    let itemTemplate = '' +
+        '<div id="' + item.id + '" class="item ' + item.type + '" data-type="' + item.type + '" data-price=" ' + item.price + '">' +
+        '<div class="item-content">' +
+        item.name + ' $' + item.price +
+        '<div class="item-quantity">' + quantity + '</div>' +
+        '</div>' +
+        '<div class="item-more">' +
+        '<h5>' + item.name + '</h5>' +
+        '<h6>$' + item.price + '</h6>' +
+        '<p>' + item.description + '</p>' +
+        usable +
+        disasseble +
+        '</div>' +
+        '</div>';
+    div.innerHTML = itemTemplate;
+    return div.firstChild;
 }

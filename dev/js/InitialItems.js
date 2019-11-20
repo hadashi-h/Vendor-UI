@@ -1,4 +1,5 @@
 import { Weapon, Quest, Consumable, CraftingMaterial } from "./Item.js";
+import { getItemTemplate } from "./utils.js";
 
 export function initialItems() {
     let items = [
@@ -15,3 +16,33 @@ export function initialItems() {
     ]; 
     return items;
 }
+export function generateItemsForPerson(person) {
+    let ret = [];
+    let allItemsList = initialItems();
+
+    for (let i = 0; i < allItemsList.length; i++) {
+      let item = allItemsList[i];
+      let randomQuantity;
+  
+      if (item instanceof Quest) {
+        randomQuantity = 1;
+      }
+      else if (item instanceof Weapon) {
+        randomQuantity = 1 + Math.floor(Math.random() * 5);
+      }
+      else {
+        randomQuantity = 1 + Math.floor(Math.random() * 100);
+      }
+      person.addItem(item.id, randomQuantity);
+  
+      while (!item.stackable && randomQuantity > 1) {
+        randomQuantity = randomQuantity - 1;
+        let itemTemplate = getItemTemplate(item.id, 1, allItemsList);
+        ret.push(itemTemplate);
+      }
+      let itemTemplate = getItemTemplate(item.id, randomQuantity, allItemsList);
+      ret.push(itemTemplate);
+    }
+    
+    return ret;
+  }

@@ -1,5 +1,5 @@
 import Inventory from "./Inventory.js";
-import { findItem, removeItem } from "./utils.js";
+import { findItem, removeItem, getItemTemplate } from "./utils.js";
 
 var personsCounter = 0;
 
@@ -73,7 +73,7 @@ export default class Person {
                 }
             }
             else {
-                let itemTemplate = this.inventory.getItemTemplate(craftingMaterialId, quantity);
+                let itemTemplate = getItemTemplate(craftingMaterialId, quantity, this.allItemsList);
                 inventoryGrid.add(itemTemplate);
                 let boughtItem = $(inventoryGrid._element).find('div#' + craftingMaterialId);
                 $(boughtItem[0]).find('.item-quantity').html(this.inventory.getItemQuantity(craftingMaterialId));

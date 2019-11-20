@@ -1,8 +1,8 @@
 import Person from "./Person.js";
-import { Weapon, Quest } from "./Item.js";
-import { elementMatches, elementClosest, compareItemType, compareItemPrice, updateFunds, findItem, removeItem } from "./utils.js";
+import { elementMatches, elementClosest, compareItemType, compareItemPrice, updateFunds,
+  findItem, removeItem } from "./utils.js";
 import Transaction from "./Transaction.js";
-import { initialItems } from "./InitialItems.js";
+import { initialItems, generateItemsForPerson } from "./InitialItems.js";
 
 var itemsList;
 var user;
@@ -24,7 +24,7 @@ $(document).ready(function () {
   itemsList = initialItems();
 
   vendor = new Person(20002, itemsList, false);
-  vendorInventory.add(generateItemsTemplates(itemsList));
+  vendorInventory.add(generateItemsForPerson(vendor));
   vendorInventory.sort(compareItemType);
 
   userInventory.sort(compareItemType);
@@ -152,37 +152,6 @@ $("#choose-quantity").on("input change", function () {
   $("#choose-quantity-modal #chosen-quantity-price").html($("#choose-quantity-modal #item-price").html() * buySliderValue);
   $("#choose-quantity-modal #chosen-quantity").html(buySliderValue);
 });
-
-//init
-function generateItemsTemplates(itemsList) {
-  let ret = [];
-  for (let i = 0; i < itemsList.length; i++) {
-    let item = itemsList[i];
-    let maxStackSize = item.maxStackSize;
-    let randomQuantity;
-
-    if (item instanceof Quest) {
-      randomQuantity = 1;
-    }
-    else if (item instanceof Weapon) {
-      randomQuantity = 1 + Math.floor(Math.random() * 5);
-    }
-    else {
-      randomQuantity = 1 + Math.floor(Math.random() * 100);
-    }
-    vendor.addItem(item.id, randomQuantity);
-
-    while (randomQuantity > maxStackSize) {
-      randomQuantity = randomQuantity - maxStackSize;
-      let itemTemplate = vendor.inventory.getItemTemplate(item.id, maxStackSize);
-      ret.push(itemTemplate);
-    }
-    let itemTemplate = vendor.inventory.getItemTemplate(item.id, randomQuantity);
-    ret.push(itemTemplate);
-  }
-  return ret;
-}
-
 
 //buttons
 $('.user-inventory').on('click', function (e) {
