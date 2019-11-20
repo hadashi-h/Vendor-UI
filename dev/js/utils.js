@@ -63,8 +63,8 @@ export function getItemTemplate(itemId, quantity, allItemsList) {
   
     if (item instanceof Consumable) {
         usable = '<button id="use-item" type="button" class="btn-primary use-item">Use Item</button>';
-    }
-    if (item instanceof DisassemblableItem) {
+    } 
+    if (item instanceof DisassemblableItem) { 
         let craftingMaterialsList = item.craftingMaterials;
         for (let i = 0; i < craftingMaterialsList.length; i++) {
             let craftingMaterialId = craftingMaterialsList[i];

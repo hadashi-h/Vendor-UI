@@ -1,6 +1,8 @@
 import Person from "./Person.js";
-import { elementMatches, elementClosest, compareItemType, compareItemPrice, updateFunds,
-  findItem, removeItem } from "./utils.js";
+import {
+  elementMatches, elementClosest, compareItemType, compareItemPrice, updateFunds,
+  findItem, removeItem
+} from "./utils.js";
 import Transaction from "./Transaction.js";
 import { initialItems, generateItemsForPerson } from "./InitialItems.js";
 

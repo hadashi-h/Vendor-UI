@@ -83,9 +83,9 @@ $item-size: 80px;
     border-color: red;
     color: red;
   }
-  &.disabled { 
-    cursor: not-allowed; 
-    .item-more:after{
+  &.disabled {
+    cursor: not-allowed;
+    .item-more:after {
       content: "You cannot sell this item";
       padding: 5px 0;
       border-top: 1px solid;
