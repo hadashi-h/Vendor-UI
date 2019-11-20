@@ -156,12 +156,13 @@ $('.user-inventory').on('click', function (e) {
   if (elementMatches(e.target, '#use-item')) {
 
     let clickedItem = elementClosest(e.target, '.item');
-    let id = clickedItem.getAttribute('id');
-    user.inventory.removeItem(+id, 1);
+    let itemId = clickedItem.getAttribute('id');
+    let item = findItem(itemId, allItemsList);
+    user.inventory.removeItem(+itemId, 1);
 
-    let eatenItem = user.inventory.getItem(id);
-    if (eatenItem && eatenItem.stackable) {
-      $(clickedItem).find('.item-quantity').html(user.inventory.getItemQuantity(id));
+    let eatenItem = user.inventory.getItem(itemId);
+    if (eatenItem && item.stackable) {
+      $(clickedItem).find('.item-quantity').html(user.inventory.getItemQuantity(itemId));
     }
     else {
       removeItem(userInventory, clickedItem);
