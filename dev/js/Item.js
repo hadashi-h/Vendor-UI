@@ -6,8 +6,8 @@ class Item {
         this.price = price;
         this.description = description;
     }
-
 }
+
 export class DisassemblableItem extends Item {
     constructor(id, name, type, price, description, materials) { 
         super(id, name, type, price, description);

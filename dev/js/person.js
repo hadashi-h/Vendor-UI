@@ -26,7 +26,7 @@ export default class Person {
         return true;
     }
 
-    buyItem(itemId, quantity) { 
+    buyItem(itemId, quantity) {
         let item = findItem(itemId, this.allItemsList);
         let totalPrice = item.price * quantity;
         this.money = this.money - totalPrice;

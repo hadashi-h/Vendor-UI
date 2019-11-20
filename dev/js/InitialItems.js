@@ -12,10 +12,11 @@ export function initialItems() {
         new CraftingMaterial(6, "Flour", "crafting", 237, "How do I eat this?"),
         new CraftingMaterial(7, "Piece of Wood", "crafting", 359, "Multi-purpose. Nicely smelling. Not so soft. I can build almost anything with it."),
         new Quest(8, "Small magical branch", "quest", 189, "It shots fireworks when I touch it!"),
-        new CraftingMaterial(9, "Piece of Iron", "crafting", 890, "It's hard to chew."),
+        new CraftingMaterial(9, "Piece of Iron", "crafting", 890, "It's hard to chew.")
     ]; 
     return items;
 }
+
 export function generateItemsForPerson(person) {
     let ret = [];
     let allItemsList = initialItems();

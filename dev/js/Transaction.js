@@ -50,7 +50,6 @@ export default class Transaction {
     }
 
     finalize() {
-
         if (this.buyer.inventory.getItem(this.item.id)) {
             this.buyer.buyItem(this.item.id, this.quantity);
             let buyerItem = $(this.buyerInventory._element).find('div#' + this.item.id);
