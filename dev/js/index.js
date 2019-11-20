@@ -67,16 +67,18 @@ function setupGrid(container) {
   }).on('dragStart', dragStart)
     .on('dragReleaseEnd', dragReleaseEnd)
     .on('receive', function (data) {
-      cloneMap[data.item._id] = {
-        item: data.item,
-        fromGrid: data.fromGrid,
-        toGrid: data.toGrid,
-        index: data.fromIndex
-      };
+      if (cloneMap[data.item._id] == undefined) {
+        cloneMap[data.item._id] = {
+          item: data.item,
+          fromGrid: data.fromGrid,
+          toGrid: data.toGrid,
+          index: data.fromIndex
+        };
+      }
+      else {
+        cloneMap[data.item._id].toGrid = data.toGrid;
+      }
     })
-    .on('send', function (data) {
-      delete cloneMap[data.item._id];
-    });
 }
 
 function dragStart(item) {
