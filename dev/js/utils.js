@@ -70,7 +70,7 @@ export function getItemTemplate(itemId, quantity, allItemsList) {
         for (let i = 0; i < craftingMaterialsList.length; i++) {
             let craftingMaterialId = craftingMaterialsList[i];
             let craftingMaterial = findItem(craftingMaterialId, allItemsList);
-            disasseble += '<div class="crafting-material">' + craftingMaterial.name + '</div>';
+            disasseble += '<div class="crafting-material"><img src="' + craftingMaterial.icon + '"/></div>';
         }
         disasseble += '<button id="disassemble-item" type="button" class="btn-primary disassemble-item">Disassemble Item</button>';
     }
@@ -78,8 +78,8 @@ export function getItemTemplate(itemId, quantity, allItemsList) {
     let itemTemplate = '' +
         '<div id="' + item.id + '" class="item ' + item.type + '" data-type="' + item.type + '" data-price=" ' + item.price + '">' +
         '<div class="item-content">' +
-        item.name + ' $' + item.price +
-        '<div class="item-quantity">' + quantity + '</div>' +
+            '<img src="' + item.icon + '"/>'+
+            '<div class="item-quantity">' + quantity + '</div>' +
         '</div>' +
         '<div class="item-more">' +
         '<h5>' + item.name + '</h5>' +
