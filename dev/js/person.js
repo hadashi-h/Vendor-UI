@@ -4,12 +4,12 @@ import { findItem, removeItem, getItemTemplate } from "./utils.js";
 var personsCounter = 0;
 
 export default class Person {
-    constructor(money, allItems, isUser) {
+    constructor(money, allItemsList, isUser) {
         this.id = personsCounter++;
         this.money = money;
-        this.allItems = allItems;
+        this.allItemsList = allItemsList;
         this.isUser = isUser;
-        this.inventory = new Inventory(this.id, this.allItems);
+        this.inventory = new Inventory(this.id, this.allItemsList);
     }
 
     addItem(itemId, quantity) {
@@ -27,14 +27,14 @@ export default class Person {
     }
 
     buyItem(itemId, quantity) { 
-        let item = findItem(itemId, this.allItems);
+        let item = findItem(itemId, this.allItemsList);
         let totalPrice = item.price * quantity;
         this.money = this.money - totalPrice;
         this.inventory.addItem(item.id, quantity);
     }
 
     sellItem(itemId, quantity) {
-        let item = findItem(itemId, this.allItems);
+        let item = findItem(itemId, this.allItemsList);
         let totalPrice = item.price * quantity;
 
         this.money = this.money + totalPrice;
@@ -42,7 +42,7 @@ export default class Person {
     }
 
     dissasembleItem(itemId, quantity, inventoryGrid) {
-        let item = findItem(itemId, this.allItems);
+        let item = findItem(itemId, this.allItemsList);
         let craftingMaterialsArray = item.craftingMaterials;
         let templateItem = $(inventoryGrid._element).find('div#' + itemId)[0];
 
@@ -58,7 +58,7 @@ export default class Person {
 
             let craftingMaterialId = craftingMaterialsArray[i];
 
-            let craftingItem = findItem(craftingMaterialId, this.allItems);
+            let craftingItem = findItem(craftingMaterialId, this.allItemsList);
             let alreadyOwnsItem = this.inventory.getItem(craftingMaterialId);
             this.addItem(craftingMaterialId, quantity);
 

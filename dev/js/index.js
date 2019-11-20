@@ -4,7 +4,7 @@ import { elementMatches, elementClosest, compareItemType, compareItemPrice, upda
 import Transaction from "./Transaction.js";
 import { initialItems, generateItemsForPerson } from "./InitialItems.js";
 
-var itemsList;
+var allItemsList;
 var user;
 var vendor;
 var currentTransaction;
@@ -21,14 +21,14 @@ var vendorInventory = grids[0];
 var userInventory = grids[1];
 
 $(document).ready(function () {
-  itemsList = initialItems();
+  allItemsList = initialItems();
 
-  vendor = new Person(20002, itemsList, false);
+  vendor = new Person(20002, allItemsList, false);
   vendorInventory.add(generateItemsForPerson(vendor));
   vendorInventory.sort(compareItemType);
 
   userInventory.sort(compareItemType);
-  user = new Person(20002, itemsList, true);
+  user = new Person(20002, allItemsList, true);
 
   updateFunds(user.money, vendor.money);
 });
@@ -90,7 +90,7 @@ function dragReleaseEnd(htmlItem) {
     delete cloneMap[htmlItem._id];
 
     let element = htmlItem._element;
-    let item = findItem(element.id, itemsList);
+    let item = findItem(element.id, allItemsList);
 
     if (cloneData.fromGrid != cloneData.toGrid) {
       let clone = cloneData.item.getElement().cloneNode(true);
@@ -180,11 +180,11 @@ $('.user-inventory').on('click', function (e) {
     let clickedItem = elementClosest(e.target, '.item');
     let id = clickedItem.getAttribute('id');
 
-    let item = findItem(id, itemsList);
+    let item = findItem(id, allItemsList);
     let craftingMaterialsArray = item.craftingMaterials;
 
     for (let i = 0; i < craftingMaterialsArray.length; i++) {
-      let craftingMaterial = findItem(craftingMaterialsArray[i], itemsList);
+      let craftingMaterial = findItem(craftingMaterialsArray[i], allItemsList);
       let craftingTemplate = `<div class="crafting-material">${craftingMaterial.name}</div>`
       $('#disassemble-modal #crafting-materials').append(craftingTemplate);
     }

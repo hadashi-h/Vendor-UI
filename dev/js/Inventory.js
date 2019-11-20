@@ -1,8 +1,7 @@
-
 export default class Inventory {
-    constructor(id, allItems) {
+    constructor(id, allItemsList) {
         this.id = id;
-        this.allItems = allItems;
+        this.allItemsList = allItemsList;
         this.items = [];
     }
 
