@@ -6,13 +6,13 @@ $item-size: 80px;
   width: $item-size;
   height: $item-size;
   margin: 3px;
-  z-index: 1;
   border-bottom: 2px solid;
   border-radius: 3px;
-  background-color: white;
+  background-color: $full-white;
+  @include z-index(item);
   @include shadow(light, 2);
   &:hover {
-    z-index: 9999;
+    @include z-index(item-hover);
     cursor: grab;
   }
 
@@ -32,38 +32,23 @@ $item-size: 80px;
     display: none;
   }
   .item-more {
-    z-index: 10;
-    opacity: 1;
-    background: #1a1a1a;
-    color: white;
+    background: $black;
+    color: $full-white;
     padding: 1em;
     width: 300px;
-    display: none;
     cursor: default;
-    @include shadow(light, 5);
+    opacity: 0;
+    pointer-events: none;
+    transform: translate3d(0, -10px, 0);
+    @include shadow(light, 5); 
+    @include z-index(item-more);
+    @include transition (all $default-duration $default-transition-timing);
   }
   &:hover > .item-more {
     display: block;
-  }
-  &.muuri-item-dragging,
-  &.muuri-item-releasing {
-    z-index: 9999;
-  }
-  &.muuri-item-dragging {
-    cursor: grabbing;
-    z-index: 3;
-  }
-  &.muuri-item-releasing {
-    z-index: 2;
-  }
-  &.muuri-item-hidden {
-    z-index: 0;
-  }
-
-  &.muuri-item-placeholder {
-    z-index: 2;
-    margin: 0;
-    opacity: 0.5;
+    pointer-events: auto;
+    opacity: 1;
+    transform: translate3d(0, 0, 0);
   }
   &.quest {
     border-color: orange;
@@ -84,14 +69,14 @@ $item-size: 80px;
   &.disabled {
     cursor: not-allowed;
     .item-more:after {
-      content: "You cannot sell this item";
+      content: "You cannot sell quest items";
       padding: 5px 0;
       border-top: 1px solid;
       width: 100%;
       color: red;
     }
   }
-  &.stackable .item-quantity{
+  &.stackable .item-quantity {
     display: block;
   }
 

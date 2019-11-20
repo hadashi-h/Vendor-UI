@@ -1,0 +1,9 @@
+.modal-content {
+  border: none;
+  @include shadow(dark, 5);
+
+  .entered-value {
+    font-weight: 800;
+    margin-left: 5px;
+  }
+}

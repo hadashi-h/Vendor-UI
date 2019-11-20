@@ -9,12 +9,20 @@ $item-size: 50px;
   }
 }
 
-.crafting-material { 
+.crafting-material {
   display: inline-block;
-  margin-right: 5px;
-  background: white;
+  margin: 0 5px 5px 0;
+  background: $white;
   img {
     width: $item-size;
-    padding: .5em;
+    padding: 0.5em;
+  }
+}
+
+.disassemble {
+  border-top: 1px solid #3a3a3a;
+  padding: 10px 0 0;
+  p {
+    margin: 0;
   }
 }

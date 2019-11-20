@@ -62,7 +62,7 @@ export function getItemTemplate(itemId, quantity, allItemsList) {
     }
   
     if (item instanceof Consumable) {
-        usable = '<button id="use-item" type="button" class="btn-primary use-item">Use Item</button>';
+        usable = '<button id="use-item" type="button" class="btn-accent use-item">Use Item</button>';
     } 
     if (item instanceof DisassemblableItem) { 
         disasseble = "<div class='disassemble'><p>Made of:</p>";
@@ -72,7 +72,7 @@ export function getItemTemplate(itemId, quantity, allItemsList) {
             let craftingMaterial = findItem(craftingMaterialId, allItemsList);
             disasseble += '<div class="crafting-material"><img src="' + craftingMaterial.icon + '"/></div>';
         }
-        disasseble += '<button id="disassemble-item" type="button" class="btn-primary disassemble-item">Disassemble Item</button></div>';
+        disasseble += '<button id="disassemble-item" type="button" class="btn-accent disassemble-item">Disassemble Item</button></div>';
     }
     let div = document.createElement('div');
     let itemTemplate = '' +

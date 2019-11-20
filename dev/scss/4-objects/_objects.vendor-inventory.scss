@@ -1,3 +1,10 @@
-.vendor-inventory, .vendor-disassemble{
-    @extend .inventory;
+.vendor-inventory {
+  @extend .inventory;
+
+  &:empty {
+    padding: 15px;
+    &:before {
+      content: "It's empty! \A You have bought everything!";
+    }
+  }
 }

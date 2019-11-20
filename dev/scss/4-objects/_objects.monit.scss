@@ -1,16 +1,18 @@
-.monit{
-    background-color: #1a1a1a;
-    color: white;
-    position: fixed;
-    padding: 1em;
-    margin: auto;
-    display: block;
-    width: 200px;
-    @include shadow(light, 5);
-    &.vendor{
-        left:0;
-    }
-    &.user{
-        right: 0;
-    }
+.monit {
+  position: absolute;
+  top: 50%; 
+  width: 200px;
+  padding: 1em;
+  margin: auto;
+  background-color: $black;
+  color: $white;
+  @include z-index(monit);
+  @include shadow(dark, 3);
+  @include transition(all $default-duration $default-transition-timing);
+  &.vendor {
+    left: 0;
+  }
+  &.user {
+    right: 0;
+  }
 }

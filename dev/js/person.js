@@ -88,8 +88,8 @@ export default class Person {
             person = "user";
         }
         $('body').append('<div class="monit ' + person + '">' + text + '</div>');
-        setTimeout(function () {
-            $('.monit.' + person).remove();
+        setTimeout(function(){
+            $('.monit').remove();
         }, 3000);
     }
 } 

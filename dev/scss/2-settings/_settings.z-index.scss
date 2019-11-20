@@ -1,0 +1,19 @@
+$z-index: (
+  monit:            99000,
+  modal:            98000,
+  item-hover:       9300,
+  item-more:        9200,
+  item-releasing:   9100,
+  item-dragging:    9000,
+  item-placeholder: 2,
+  item:             1,
+  item-hidden:      0
+);
+
+@function z-index($key) {
+  @return map-get($z-index, $key);
+}
+
+@mixin z-index($key) {
+  z-index: z-index($key);
+}

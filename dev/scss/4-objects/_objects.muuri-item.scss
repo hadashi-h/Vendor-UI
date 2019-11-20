@@ -1,0 +1,19 @@
+ 
+.item {
+  &.muuri-item-dragging {
+    cursor: grabbing;
+    @include z-index(item-dragging);
+  }
+  &.muuri-item-releasing {
+    @include z-index(item-releasing);
+  }
+  &.muuri-item-hidden {
+    @include z-index(item-hidden);
+  }
+
+  &.muuri-item-placeholder {
+    @include z-index(item-placeholder);
+    margin: 0;
+    opacity: 0.5;
+  } 
+}

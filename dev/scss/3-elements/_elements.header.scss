@@ -1,0 +1,9 @@
+header {
+  padding: .5em 1em;
+  background-color: $full-white;
+  @include shadow(light, 2);
+  margin-bottom: 2em;
+  h1{
+      margin: 0;
+  }
+}

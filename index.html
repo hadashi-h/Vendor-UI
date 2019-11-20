@@ -9,16 +9,16 @@
 
     <link rel="stylesheet" href="http://localhost:3000/css/default-css.css">
     <link rel="stylesheet" href="http://localhost:3000/css/styles.css">
+
+    <link href="https://fonts.googleapis.com/css?family=Acme&display=swap" rel="stylesheet">
 </head>
 
 <body>
+    <header>
+        <h1>Shop</h1>
+    </header>
+
     <div class="container">
-        <div class="row">
-            <div class="col">
-                <h1>Shop</h1>
-            </div>
-        </div>
-        <hr />
         <div class="row">
             <div class="col-sm-6">
                 <div class="d-flex justify-content-between">
@@ -26,9 +26,8 @@
                     <h2>$<span id="vendor-money"></span></h2>
                 </div>
                 <div class="vendor-inventory grid mb-3 mt-3"></div>
-                <hr>
-                <button id="sort-vendor-type" class="btn-primary">Sort by type</button>
-                <button id="sort-vendor-price" class="btn-primary">Sort by price</button>
+                <button id="sort-vendor-type" class="btn-ghost">Sort by type</button>
+                <button id="sort-vendor-price" class="btn-ghost">Sort by price</button>
             </div>
             <div class="col-sm-6">
                 <div class="d-flex justify-content-between">
@@ -36,36 +35,37 @@
                     <h2>$<span id="user-money"></span></h2>
                 </div>
                 <div class="user-inventory grid mb-3 mt-3"></div>
-                <hr>
-                <button id="sort-user-type" class="btn-primary">Sort by type</button>
-                <button id="sort-user-price" class="btn-primary">Sort by price</button>
+                <button id="sort-user-type" class="btn-ghost">Sort by type</button>
+                <button id="sort-user-price" class="btn-ghost">Sort by price</button>
             </div>
         </div>
     </div>
-
+    
     <div class="modal fade" id="choose-quantity-modal" tabindex="-1" role="dialog"
         aria-labelledby="choose-quantity-modal-title" aria-hidden="true" data-backdrop="static" data-keyboard="false">
         <div class="modal-dialog modal-dialog-centered" role="document">
             <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="choose-quantity-modal-title">Choose the amount</h5>
+                <div class="modal-header d-flex justify-content-between">
+                    <h5 class="modal-title" id="choose-quantity-modal-title"><span id="item-name"></span> </h5>
+                    <h5 class="modal-title">$<span id="item-price"></span></h5>
                 </div>
                 <div class="modal-body">
-                    <p class="text-center"><span id="item-name"></span> <span id="item-price"></span></p>
+
+
+                    <p>Amount to be disassembled: <span id="chosen-quantity" class="entered-value"></span></p>
                     <div class="d-flex">
                         <div id="min-value" class="range-value">1</div>
                         <input type="range" min="1" max="100" value="1" class="flex-grow-1 slider" id="choose-quantity">
                         <div id="max-value" class="range-value">14</div>
                     </div>
 
-                    <p class="text-center"><span id="chosen-quantity"></span></p>
-                    <p class="text-center">Total price: $<span id="chosen-quantity-price"></span></p>
+                    <h6 class="text-right mt-4">Total price: <span id="chosen-quantity-price" class="entered-value"></span></h6>
+
                 </div>
-                <div class="modal-footer">
-                    <button id="choose-quantity-cancel" type="button" class="btn btn-secondary"
+                <div class="modal-footer d-flex justify-content-between">
+                    <button id="choose-quantity-cancel" type="button" class="btn-ghost"
                         data-dismiss="modal">Cancel</button>
-                    <button id="choose-quantity-buy" type="button" class="btn btn-primary"
-                        data-dismiss="modal">Accept</button>
+                    <button id="choose-quantity-buy" type="button" class="btn-cta" data-dismiss="modal">Accept</button>
                 </div>
             </div>
         </div>
@@ -84,26 +84,27 @@
                     <p>Will be disassembled into:</p>
                     <div id="crafting-materials"></div>
                     <div id="slider-wrapper">
-                        <p>Choose the amount to be disassembled:</p>
+                        <p>Amount to be disassembled: <span id="chosen-quantity" class="entered-value"></span></p>
                         <div class="d-flex">
                             <div id="min-value" class="range-value">1</div>
                             <input type="range" min="1" max="100" value="1" class="flex-grow-1 slider"
                                 id="disassemble-slider">
                             <div id="max-value" class="range-value">14</div>
                         </div>
-
-                        <p class="text-center"><span id="chosen-quantity"></span></p>
                     </div>
                 </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
-                    <button id="dissasemble-accept" type="button" class="btn btn-primary"
-                        data-dismiss="modal">Accept</button>
+                <div class="modal-footer d-flex justify-content-between">
+                    <button type="button" class="btn-ghost" data-dismiss="modal">Cancel</button>
+                    <button id="dissasemble-accept" type="button" class="btn-cta" data-dismiss="modal">Accept</button>
                 </div>
             </div>
         </div>
     </div>
-    <div>Icons made by <a href="https://www.flaticon.com/authors/freepik" title="Freepik">Freepik</a> from <a href="https://www.flaticon.com/" title="Flaticon">www.flaticon.com</a></div>
+    <footer class="d-flex justify-content-between">
+        <div>Made by <a href="https://hadashi.online/">Hadashi</a></div>
+        <div>Icons made by <a href="https://www.flaticon.com/authors/freepik" title="Freepik">Freepik</a> from <a
+                href="https://www.flaticon.com/" title="Flaticon">www.flaticon.com</a></div>
+    </footer>
 </body>
 <script src="http://localhost:3000/js/default-js.js"></script>
 <script src="http://localhost:3000/js/index.js" type="module"></script>

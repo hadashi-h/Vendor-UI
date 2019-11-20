@@ -132,7 +132,7 @@ function dragReleaseEnd(htmlItem) {
       $('#choose-quantity-modal #item-name').html(item.name);
       $('#choose-quantity-modal #item-price').html(item.price);
       $("#choose-quantity-modal #chosen-quantity").html(buySliderValue);
-      $("#choose-quantity-modal #chosen-quantity-price").html($("#item-price").html() * buySliderValue);
+      $("#choose-quantity-modal #chosen-quantity-price").html('$' + $("#item-price").html() * buySliderValue);
 
       $('#choose-quantity-modal').modal('show');
     }
@@ -150,7 +150,7 @@ function dragReleaseEnd(htmlItem) {
 
 $("#choose-quantity").on("input change", function () {
   buySliderValue = $(this).val();
-  $("#choose-quantity-modal #chosen-quantity-price").html($("#choose-quantity-modal #item-price").html() * buySliderValue);
+  $("#choose-quantity-modal #chosen-quantity-price").html('$' + $("#choose-quantity-modal #item-price").html() * buySliderValue);
   $("#choose-quantity-modal #chosen-quantity").html(buySliderValue);
 });
 
@@ -187,7 +187,7 @@ $('.user-inventory').on('click', function (e) {
 
     for (let i = 0; i < craftingMaterialsArray.length; i++) {
       let craftingMaterial = findItem(craftingMaterialsArray[i], allItemsList);
-      let craftingTemplate = `<div class="crafting-material">${craftingMaterial.name}</div>`
+      let craftingTemplate = `<div class="crafting-material"><img src="${craftingMaterial.icon}"/></div></div>`
       $('#disassemble-modal #crafting-materials').append(craftingTemplate);
     }
     $('#disassemble-modal #item-name').html(item.name);
