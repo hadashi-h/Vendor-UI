@@ -52,14 +52,7 @@ export function removeItem(inventory, itemToDestroy) {
 }
 
 export function getItemTemplate(itemId, quantity, allItemsList) {
-    let item;
-    for (let i = 0; i < allItemsList.length; i++) {
-        if (itemId == allItemsList[i].id) {
-            item = allItemsList[i];
-            break;
-        }
-    }
-
+    let item = findItem(itemId, allItemsList);
     let usable = "";
     let disasseble = "";
     if (item instanceof Consumable) {
