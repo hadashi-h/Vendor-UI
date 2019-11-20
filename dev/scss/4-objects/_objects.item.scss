@@ -7,7 +7,7 @@ $item-size: 80px;
   height: $item-size;
   margin: 3px;
   z-index: 1;
-  border: 1px solid;
+  border-bottom: 2px solid;
   border-radius: 3px;
   background-color: white;
   @include shadow(light, 2);
@@ -22,7 +22,6 @@ $item-size: 80px;
     height: 100%;
     overflow: hidden;
     text-overflow: ellipsis;
-    padding: 0 2px;
   }
   .item-quantity {
     position: absolute;
@@ -30,18 +29,17 @@ $item-size: 80px;
     bottom: 0;
     padding: 0;
     margin: 0 5px;
+    display: none;
   }
   .item-more {
     z-index: 10;
     opacity: 1;
-    background: white;
+    background: #1a1a1a;
+    color: white;
     padding: 1em;
     width: 300px;
-    border: 1px solid lightgray;
-    position: absolute;
-    left: 100%;
-    margin: 0% -50%;
     display: none;
+    cursor: default;
     @include shadow(light, 5);
   }
   &:hover > .item-more {
@@ -95,5 +93,10 @@ $item-size: 80px;
   }
   &.stackable .item-quantity{
     display: block;
+  }
+
+  img {
+    width: $item-size;
+    padding: 1em;
   }
 }
