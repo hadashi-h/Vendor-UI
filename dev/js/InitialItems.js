@@ -4,7 +4,7 @@ import { getItemTemplate } from "./utils.js";
 export function initialItems() {
     let items = [
         new Quest(0, "Szczerbiec", "Quest", 2085, "Some kind of a sword. A little bit jagged. I cannot use it, or spell its name.", "http://localhost:3000/img/sword.svg"),
-        new Consumable(1, "Russian Dumpling", "Consumable", 55, "A culinary masterpiece. Will boost my energy up to 15% by 30 minutes!", "http://localhost:3000/img/dumplings.svg", [6]),
+        new Consumable(1, "Russian Dumpling", "Consumable", 55, "A culinary masterpiece. Will boost my energy up to 15% for 30 minutes!", "http://localhost:3000/img/dumplings.svg", [6]),
         new CraftingMaterial(2, "Rotten cardboard", "Crafting material", 127, "I could definitely use this. For something. Hm...", "http://localhost:3000/img/box.svg"),
         new Weapon(3, "Slingshot", "Weapon", 862, "A ranged weapon for catching squirrels.", "http://localhost:3000/img/sling-shot-variant.svg", [5, 7]),
         new Weapon(4, "Boxing Gloves", "Weapon", 1250, "Now where is my kangaroo...", "http://localhost:3000/img/boxing.svg", [5, 9]),
