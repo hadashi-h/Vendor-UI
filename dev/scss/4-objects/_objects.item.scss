@@ -13,6 +13,7 @@ $item-size: 80px;
   @include shadow(light, 2);
   &:hover {
     z-index: 9999;
+    cursor: grab;
   }
 
   .item-content {
@@ -51,7 +52,7 @@ $item-size: 80px;
     z-index: 9999;
   }
   &.muuri-item-dragging {
-    cursor: move;
+    cursor: grabbing;
     z-index: 3;
   }
   &.muuri-item-releasing {
