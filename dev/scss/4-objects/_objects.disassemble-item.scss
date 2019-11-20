@@ -1,17 +1,20 @@
-.disassemble-item{
-    display: none;
+$item-size: 50px;
+
+.disassemble-item {
+  display: none;
 }
-.user-inventory{
-    .disassemble-item{
-        display: block;
-    }
+.user-inventory {
+  .disassemble-item {
+    display: block;
+  }
 }
 
-.crafting-material{
-    width: auto;
-    height: 50px;
-    border: 1px solid lightgray;
+.crafting-material { 
+  display: inline-block;
+  margin-right: 5px;
+  background: white;
+  img {
+    width: $item-size;
     padding: .5em;
-    display: inline-block;
-    margin-right: 5px;
+  }
 }

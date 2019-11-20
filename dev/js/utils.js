@@ -65,13 +65,14 @@ export function getItemTemplate(itemId, quantity, allItemsList) {
         usable = '<button id="use-item" type="button" class="btn-primary use-item">Use Item</button>';
     } 
     if (item instanceof DisassemblableItem) { 
+        disasseble = "<div class='disassemble'><p>Made of:</p>";
         let craftingMaterialsList = item.craftingMaterials;
         for (let i = 0; i < craftingMaterialsList.length; i++) {
             let craftingMaterialId = craftingMaterialsList[i];
             let craftingMaterial = findItem(craftingMaterialId, allItemsList);
             disasseble += '<div class="crafting-material"><img src="' + craftingMaterial.icon + '"/></div>';
         }
-        disasseble += '<button id="disassemble-item" type="button" class="btn-primary disassemble-item">Disassemble Item</button>';
+        disasseble += '<button id="disassemble-item" type="button" class="btn-primary disassemble-item">Disassemble Item</button></div>';
     }
     let div = document.createElement('div');
     let itemTemplate = '' +
@@ -81,12 +82,11 @@ export function getItemTemplate(itemId, quantity, allItemsList) {
             '<div class="item-quantity">' + quantity + '</div>' +
         '</div>' +
         '<div class="item-more">' +
-        '<h5>' + item.name + '</h5>' +
-        '<h6>$' + item.price + '</h6>' +
-        '<p>' + item.description + '</p>' +
-        usable +
-        disasseble +
-        '</div>' +
+            '<div class="d-flex justify-content-between align-items-center"><h5>' + item.name + '</h5><h5>$' + item.price + '</h5></div>' +
+            '<div class="d-flex justify-content-between align-items-center"><p>' + item.type + '</p> ' +  usable + ' </div>' +
+            '<p>' + item.description + '</p>' +
+            disasseble +
+            '</div>' +
         '</div>';
     div.innerHTML = itemTemplate;
     return div.firstChild;
