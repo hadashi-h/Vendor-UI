@@ -1,18 +1,24 @@
-.inventory{
-    width: 100%;
-    min-height: 300px;
-    margin: 0 auto;
-    border: 1px dashed $gray;
-    border-radius: 5px;
-    &:empty {
-        padding: 15px;
-        &:before{
-          color: darken($gray, 5%); 
-          display: block;
-          font-size: 20px;
-          font-weight: 700;
-          text-align: center;
-          white-space: pre;
-        }
-      }
+.inventory {
+  width: 100%;
+  min-height: 300px;
+  margin: 0 auto;
+  border: 1px dashed $gray;
+  border-radius: 5px;
+  &:empty {
+    padding: 15px;
+    &:before {
+      color: darken($gray, 5%);
+      display: block;
+      font-size: 20px;
+      font-weight: 700;
+      text-align: center;
+      white-space: pre;
+    }
+  }
+}
+
+.wrapper{
+  position: sticky;
+  top: 20px;
+  margin-bottom: 2em;
 }
