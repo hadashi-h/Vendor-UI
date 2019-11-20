@@ -7,7 +7,6 @@ import { initialItems } from "./InitialItems.js";
 var itemsList;
 var user;
 var vendor;
-var uuid = 0;
 var currentTransaction;
 var cloneMap = {};
 
@@ -175,10 +174,10 @@ function generateItemsTemplates(itemsList) {
 
     while (randomQuantity > maxStackSize) {
       randomQuantity = randomQuantity - maxStackSize;
-      let itemTemplate = vendor.inventory.getItemTemplate(item.id, ++uuid, maxStackSize);
+      let itemTemplate = vendor.inventory.getItemTemplate(item.id, maxStackSize);
       ret.push(itemTemplate);
     }
-    let itemTemplate = vendor.inventory.getItemTemplate(item.id, ++uuid, randomQuantity);
+    let itemTemplate = vendor.inventory.getItemTemplate(item.id, randomQuantity);
     ret.push(itemTemplate);
   }
   return ret;
@@ -250,57 +249,8 @@ $(disassembleSlider).on("input change", function () {
 
 $('#dissasemble-accept').on('click', function () {
   let itemId = $('#disassemble-modal').attr('data-id');
-  dissasembleItem(+itemId, disassembleSliderValue);
-  user.speaks("Welp, it's gone now");
+  user.dissasembleItem(+itemId, disassembleSliderValue, userInventory);
 });
-
-function dissasembleItem(itemId, quantity) {
-  let item = findItem(itemId, itemsList);
-  let craftingMaterialsArray = item.craftingMaterials;
-  let templateItem = $(userInventory._element).find('div#' + item.id)[0];
-
-  user.removeItem(item.id, quantity);
-  if (user.inventory.getItem(item.id)) {
-    if (item.maxStackSize != 1) {
-      $(templateItem).find('.item-quantity').html(user.inventory.getItemQuantity(item.id));
-    }
-    else {
-      removeItem(userInventory, templateItem);
-    }
-  }
-  else {
-    removeItem(userInventory, templateItem);
-  }
-
-  for (let i = 0; i < quantity; i++) {
-    for (let i = 0; i < craftingMaterialsArray.length; i++) {
-
-      let craftingMaterialId = craftingMaterialsArray[i];
-      let craftingMaterialAmount = 1;
-      let itemTemplate = user.inventory.getItemTemplate(craftingMaterialId, ++uuid, craftingMaterialAmount);
-
-      let craftingItem = findItem(craftingMaterialId, itemsList);
-
-      if (user.inventory.getItem(craftingMaterialId)) {
-        user.addItem(craftingMaterialId, craftingMaterialAmount);
-        let buyerItem = $(userInventory._element).find('div#' + craftingMaterialId);
-
-        if (craftingItem.maxStackSize != 1) {
-          $(buyerItem).find('.item-quantity').html(user.inventory.getItemQuantity(craftingMaterialId));
-          if (buyerItem.length > 1) {
-            removeItem(userInventory, buyerItem[0]);
-          }
-        }
-      }
-      else {
-        user.addItem(craftingMaterialId, craftingMaterialAmount);
-        userInventory.add(itemTemplate);
-        let boughtItem = $(userInventory._element).find('div#' + craftingMaterialId);
-        $(boughtItem[0]).find('.item-quantity').html(user.inventory.getItemQuantity(craftingMaterialId));
-      }
-    }
-  }
-}
 
 $('#sort-vendor-type').on('click', function () {
   vendorInventory.sort(compareItemType);

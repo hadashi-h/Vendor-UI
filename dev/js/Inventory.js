@@ -52,7 +52,7 @@ export default class Inventory {
         }
     }
 
-    getItemTemplate(itemId, stackId, quantity) {
+    getItemTemplate(itemId, quantity) {
         let item;
         let allItems = this.allItems;
         for (let i = 0; i < allItems.length; i++) {
@@ -78,7 +78,7 @@ export default class Inventory {
         } 
         let div = document.createElement('div');
         let itemTemplate = '' +
-            '<div id="' + item.id + '" class="item ' + item.type + '" data-stackId="' + stackId + '" data-type="' + item.type + '" data-price=" ' + item.price + '">' +
+            '<div id="' + item.id + '" class="item ' + item.type + '" data-type="' + item.type + '" data-price=" ' + item.price + '">' +
                 '<div class="item-content">' +
                     item.name + ' $' + item.price +
                     '<div class="item-quantity">' + quantity + '</div>' +
