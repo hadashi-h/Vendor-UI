@@ -86,57 +86,54 @@ function dragStart(item) {
 
 function dragReleaseEnd(htmlItem) {
   let cloneData = cloneMap[htmlItem._id];
-  if (cloneData) {
+  if (cloneData && cloneData.fromGrid != cloneData.toGrid) {
     delete cloneMap[htmlItem._id];
 
     let element = htmlItem._element;
     let item = findItem(element.id, allItemsList);
+    let clone = cloneData.item.getElement().cloneNode(true);
+    clone.setAttribute('style', 'display:none;');
+    clone.children[0].setAttribute('style', '');
+    clone.classList.add('clone')
+    cloneData.fromGrid.add(clone, { index: cloneData.index });
+    cloneData.fromGrid.show(clone);
 
-    if (cloneData.fromGrid != cloneData.toGrid) {
-      let clone = cloneData.item.getElement().cloneNode(true);
-      clone.setAttribute('style', 'display:none;');
-      clone.children[0].setAttribute('style', '');
-      clone.classList.add('clone')
-      cloneData.fromGrid.add(clone, { index: cloneData.index });
-      cloneData.fromGrid.show(clone);
+    let buyer;
+    let seller;
+    let buyerInventory;
+    let sellerInventory;
 
-      let buyer;
-      let seller;
-      let buyerInventory;
-      let sellerInventory;
+    if (htmlItem._gridId == 2) {
+      buyer = user;
+      seller = vendor;
+      buyerInventory = userInventory;
+      sellerInventory = vendorInventory;
+    }
+    else {
+      buyer = vendor;
+      seller = user;
+      buyerInventory = vendorInventory;
+      sellerInventory = userInventory;
+    }
 
-      if (htmlItem._gridId == 2) {
-        buyer = user;
-        seller = vendor;
-        buyerInventory = userInventory;
-        sellerInventory = vendorInventory;
-      }
-      else {
-        buyer = vendor;
-        seller = user;
-        buyerInventory = vendorInventory;
-        sellerInventory = userInventory;
-      }
+    let stackAmount = $(element).find('.item-quantity').text();
 
-      let stackAmount = $(element).find('.item-quantity').text();
+    currentTransaction = new Transaction(buyer, buyerInventory, seller, sellerInventory, item);
 
-      currentTransaction = new Transaction(buyer, buyerInventory, seller, sellerInventory, item);
+    $(buySlider).val(1);
+    buySliderValue = 1;
+    if (+stackAmount != 1) {
+      $(buySlider).attr('max', stackAmount);
+      $('#choose-quantity-modal #max-value').html(stackAmount);
+      $('#choose-quantity-modal #item-name').html(item.name);
+      $('#choose-quantity-modal #item-price').html(item.price);
+      $("#choose-quantity-modal #chosen-quantity").html(buySliderValue);
+      $("#choose-quantity-modal #chosen-quantity-price").html($("#item-price").html() * buySliderValue);
 
-      $(buySlider).val(1);
-      buySliderValue = 1;
-      if (+stackAmount != 1) {
-        $(buySlider).attr('max', stackAmount);
-        $('#choose-quantity-modal #max-value').html(stackAmount);
-        $('#choose-quantity-modal #item-name').html(item.name);
-        $('#choose-quantity-modal #item-price').html(item.price);
-        $("#choose-quantity-modal #chosen-quantity").html(buySliderValue);
-        $("#choose-quantity-modal #chosen-quantity-price").html($("#item-price").html() * buySliderValue);
-
-        $('#choose-quantity-modal').modal('show');
-      }
-      else {
-        currentTransaction.continue();
-      }
+      $('#choose-quantity-modal').modal('show');
+    }
+    else {
+      currentTransaction.continue();
     }
   }
 
