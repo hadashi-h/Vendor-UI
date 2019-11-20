@@ -26,6 +26,7 @@ export default class Transaction {
                 this.finalize();
                 this.seller.speaks("Use it well");
             }
+            updateFunds(this.buyer.money, this.seller.money);
         }
         //user sells stuff
         if (!this.buyer.isUser) {
@@ -38,8 +39,8 @@ export default class Transaction {
                 this.finalize();
                 this.seller.speaks("I think you might want it");
             }
+            updateFunds(this.seller.money, this.buyer.money);
         }
-        updateFunds(this.seller.money, this.buyer.money);
     }
 
     cancel() {
