@@ -55,6 +55,12 @@ export function getItemTemplate(itemId, quantity, allItemsList) {
     let item = findItem(itemId, allItemsList);
     let usable = "";
     let disasseble = "";
+    let stackable = "";
+
+    if(item.stackable){
+        stackable = "stackable";
+    }
+  
     if (item instanceof Consumable) {
         usable = '<button id="use-item" type="button" class="btn-primary use-item">Use Item</button>';
     }
@@ -69,7 +75,7 @@ export function getItemTemplate(itemId, quantity, allItemsList) {
     }
     let div = document.createElement('div');
     let itemTemplate = '' +
-        '<div id="' + item.id + '" class="item ' + item.type + '" data-type="' + item.type + '" data-price=" ' + item.price + '">' +
+        '<div id="' + item.id + '" class="item ' + item.className + ' ' + stackable + '" data-type="' + item.type + '" data-price=" ' + item.price + '">' +
         '<div class="item-content">' +
             '<img src="' + item.icon + '"/>'+
             '<div class="item-quantity">' + quantity + '</div>' +

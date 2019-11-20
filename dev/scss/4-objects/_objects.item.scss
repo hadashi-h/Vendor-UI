@@ -93,4 +93,7 @@ $item-size: 80px;
       color: red;
     }
   }
+  &.stackable .item-quantity{
+    display: block;
+  }
 }
