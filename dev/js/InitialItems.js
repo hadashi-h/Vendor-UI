@@ -29,7 +29,7 @@ export function generateItemsForPerson(person) {
         randomQuantity = 1;
       }
       else if (item instanceof Weapon) {
-        randomQuantity = 1 + Math.floor(Math.random() * 5);
+        randomQuantity = 1 + Math.floor(Math.random() * 50);
       }
       else {
         randomQuantity = 1 + Math.floor(Math.random() * 100);
