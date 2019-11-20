@@ -54,7 +54,7 @@ export default class Transaction {
         if (this.buyer.inventory.getItem(this.item.id)) {
             this.buyer.buyItem(this.item.id, this.quantity);
             let buyerItem = $(this.buyerInventory._element).find('div#' + this.item.id);
-            if (this.item.maxStackSize != 1) {
+            if (this.item.stackable) {
                 $(buyerItem).find('.item-quantity').html(this.buyer.inventory.getItemQuantity(this.item.id));
 
                 if (buyerItem.length > 1) {
@@ -74,7 +74,7 @@ export default class Transaction {
         this.seller.sellItem(this.item.id, this.quantity);
         let sellerItem = $(this.sellerInventory._element).find('div#' + this.item.id);
 
-        if (this.seller.inventory.getItem(this.item.id) && this.item.maxStackSize != 1) {
+        if (this.seller.inventory.getItem(this.item.id) && this.item.stackable) {
             $(sellerItem).find('.item-quantity').html(this.seller.inventory.getItemQuantity(this.item.id));
         }
         else {

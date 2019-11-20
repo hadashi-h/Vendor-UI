@@ -163,8 +163,8 @@ $('.user-inventory').on('click', function (e) {
     user.inventory.removeItem(+id, 1);
 
     let eatenItem = user.inventory.getItem(id);
-    if (eatenItem && eatenItem.maxStackSize != 1) {
-        $(clickedItem).find('.item-quantity').html(user.inventory.getItemQuantity(id));
+    if (eatenItem && eatenItem.stackable) {
+      $(clickedItem).find('.item-quantity').html(user.inventory.getItemQuantity(id));
     }
     else {
       removeItem(userInventory, clickedItem);

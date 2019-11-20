@@ -18,25 +18,27 @@ export class DisassemblableItem extends Item {
 export class Weapon extends DisassemblableItem {
     constructor(...args) {
         super(...args);
-        this.maxStackSize = 1;
+        this.stackable = false;
     }
 }
 
 export class Consumable extends DisassemblableItem {
     constructor(...args) {
         super(...args);
+        this.stackable = true;
     }
 }
 
 export class CraftingMaterial extends Item {
     constructor(...args) {
         super(...args);
+        this.stackable = true;
     }
 }
 
 export class Quest extends Item {
     constructor(...args) {
         super(...args);
-        this.maxStackSize = 1;
+        this.stackable = false;
     }
 }

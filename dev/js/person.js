@@ -47,7 +47,7 @@ export default class Person {
         let templateItem = $(inventoryGrid._element).find('div#' + itemId)[0];
 
         this.removeItem(itemId, quantity);
-        if (this.inventory.getItem(itemId) && item.maxStackSize != 1) {
+        if (this.inventory.getItem(itemId) && item.stackable) {
             $(templateItem).find('.item-quantity').html(this.inventory.getItemQuantity(itemId));
         }
         else {
@@ -65,7 +65,7 @@ export default class Person {
             if (alreadyOwnsItem) {
                 let buyerItem = $(inventoryGrid._element).find('div#' + craftingMaterialId);
 
-                if (craftingItem.maxStackSize != 1) {
+                if (craftingItem.stackable) {
                     $(buyerItem).find('.item-quantity').html(this.inventory.getItemQuantity(craftingMaterialId));
                     if (buyerItem.length > 1) {
                         removeItem(inventoryGrid, buyerItem[0]);
