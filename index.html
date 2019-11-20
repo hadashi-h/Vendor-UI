@@ -30,22 +30,26 @@
     <div class="container">
         <div class="row">
             <div class="col-sm-6">
-                <div class="d-flex justify-content-between">
-                    <h2>Vendor</h2>
-                    <h2>$<span id="vendor-money"></span></h2>
+                <div class="wrapper">
+                    <div class="d-flex justify-content-between">
+                        <h2>Vendor</h2>
+                        <h2>$<span id="vendor-money"></span></h2>
+                    </div>
+                    <div class="vendor-inventory grid mb-3 mt-3"></div>
+                    <button id="sort-vendor-type" class="btn-ghost">Sort by type</button>
+                    <button id="sort-vendor-price" class="btn-ghost">Sort by price</button>
                 </div>
-                <div class="vendor-inventory grid mb-3 mt-3"></div>
-                <button id="sort-vendor-type" class="btn-ghost">Sort by type</button>
-                <button id="sort-vendor-price" class="btn-ghost">Sort by price</button>
             </div>
             <div class="col-sm-6">
-                <div class="d-flex justify-content-between">
-                    <h2>User</h2>
-                    <h2>$<span id="user-money"></span></h2>
+                <div class="wrapper">
+                    <div class="d-flex justify-content-between">
+                        <h2>User</h2>
+                        <h2>$<span id="user-money"></span></h2>
+                    </div>
+                    <div class="user-inventory grid mb-3 mt-3"></div>
+                    <button id="sort-user-type" class="btn-ghost">Sort by type</button>
+                    <button id="sort-user-price" class="btn-ghost">Sort by price</button>
                 </div>
-                <div class="user-inventory grid mb-3 mt-3"></div>
-                <button id="sort-user-type" class="btn-ghost">Sort by type</button>
-                <button id="sort-user-price" class="btn-ghost">Sort by price</button>
             </div>
         </div>
     </div>
